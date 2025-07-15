@@ -1,0 +1,295 @@
+@import '../../assets/styles/variables';
+
+.main {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  font-family: sans-serif;
+  overflow-x: hidden;
+  position: relative;
+  .back{
+    position:absolute;
+    width: 100%;
+    height: 100%;
+    background: #eeeeee;  
+    z-index: -5;  
+  }
+  // Slider principal de imágenes
+  .hero {
+    position: relative;
+    color: $color-white;
+    display: flex;
+    height: 35vh;
+
+    &__slider {
+      z-index: -5;
+      display: flex;
+      width: calc(100vw * 10);
+    }
+
+    &__slide {
+      height: 60vh;
+      width: 100vw;
+      flex-shrink: 0;
+      background-size: cover;
+      background-position: center;
+    }
+
+    &__overlay {
+      position: absolute;
+      z-index: -1;
+      background: linear-gradient(to bottom, transparent 30%, #eeeeee 80%);
+      width: 100vw;
+      height: 30vh;
+      bottom: -30vh;
+    }
+  }
+
+  // Slider horizontal de tarjetas con flechas
+  .card-slider {
+    display: flex;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    justify-content: center;
+
+    &__container {
+      overflow: hidden;
+      width: 1200px;
+      padding: $padding-sm 0;
+      position: relative;
+
+      .card-slider__arrow {
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+        width: 40px;
+        height: 40px;
+        background: $color-white;
+        border: none;
+        border-radius: 50%;
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        z-index: 2;
+        transition: background 0.2s ease;
+
+        svg {
+          width: 16px;
+          height: 16px;
+          fill: none;
+          stroke: #3483fa;
+          stroke-width: 2;
+        }
+
+        &:hover {
+          background: #f7f7f7;
+        }
+
+        &--left {
+          left: 0.5rem;
+        }
+
+        &--right {
+          right: 0.5rem;
+        }
+      }
+    }
+
+    &__slider {
+      height: 300px;
+      display: flex;
+      flex-direction: row;
+      gap: 20px;
+      transition: transform 0.5s ease;
+    }
+
+    &__card {
+      scroll-snap-align: start;
+      background: $color-white;
+      padding: 1rem;
+      border-radius: 12px;
+      width: 180px;
+      min-width: 180px;
+      flex-shrink: 0;
+      min-height: 100%;
+      box-shadow: $shadow-md;
+      text-align: center;
+      transition: box-shadow 0.3s;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-evenly;
+
+      &:nth-child(1) {
+        margin-left: 10px;
+      }
+    }
+
+    &__image {
+      width: 100px;
+      height: 100px;
+      object-fit: contain;
+      margin-bottom: 0.5rem;
+    }
+
+    &__title {
+      font-size: $text-font-size-sm;
+      margin-bottom: 0.5rem;
+    }
+
+    &__description {
+      font-size: 0.9rem;
+    }
+  }
+
+  // Carrusel de productos recomendados
+  .product-carousel {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    &__container{
+      background:white;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: $shadow-sm;
+      overflow: hidden;
+    }
+    &__title {
+      margin-bottom: 1rem;
+      font-size: $text-font-size-lg;
+      font-family: $text-font-family;
+    }
+  
+    &__list {
+      display: flex;
+      gap: 1rem;
+      height: 350px;
+    }
+  
+    &__card {
+      background: $color-white;
+      padding: 1rem;
+      min-width: 160px;
+      max-width: 180px;
+      border-radius: 8px;
+      
+      display: flex;
+      flex-direction: column;
+      gap: 0.25rem;
+      font-family: $text-font-family;
+      font-size: $text-font-size-sm;
+    }
+  
+    &__image {
+      width: 100%;
+      height: 44%;
+      background: black;
+      object-fit: contain;
+    }
+  
+    &__name {
+      margin-bottom: 10px;
+    }
+  
+    &__old-price {
+      font-size: 0.85rem;
+      color: #999;
+      text-decoration: line-through;
+    }
+  
+    &__price {
+      font-size: $text-font-size-lg;
+      font-weight: bold;
+    }
+  
+    &__discount {
+      color: #00a650;
+      font-size: 0.85rem;
+      font-weight: bold;
+    }
+  
+    &__cuotas {
+      font-size: 0.8rem;
+      color: #00a650;
+    }
+  
+    &__envio {
+      font-size: 0.8rem;
+      color: #00a650;
+    }
+  
+    &__full {
+      font-size: 0.75rem;
+      color: #00a650;
+      font-weight: bold;
+    }
+  }
+
+  // Sección de beneficios de Meli Plus
+  .meli-plus {
+    background: #9425d5;
+    color: $color-white;
+    padding: 2rem;
+    border-radius: 8px;
+
+    &__title {
+      font-size: $text-font-size-md;
+    }
+
+    &__benefits {
+      display: flex;
+      gap: 2rem;
+      flex-wrap: wrap;
+      margin-top: 1rem;
+      padding: 0;
+
+      &__benefit {
+        list-style: none;
+        font-size: $text-font-size-sm;
+      }
+    }
+  }
+
+  // Video publicitario de Mercado Play
+  .mercado-play {
+    position: relative;
+    border-radius: 8px;
+    overflow: hidden;
+
+    &__video {
+      width: 100%;
+      display: block;
+    }
+
+    &__overlay {
+      position: absolute;
+      top: 10%;
+      left: 10%;
+      color: $color-white;
+    }
+
+    &__title {
+      font-size: $text-font-size-md;
+      margin-bottom: 1rem;
+    }
+
+    &__button {
+      padding: 0.5rem 1rem;
+      background: $color-white;
+      color: $color-text;
+      border: none;
+      border-radius: $radius-sm;
+      cursor: pointer;
+    }
+  }
+
+  // Media query para tablets
+  @media (min-width: 768px) and (max-width: 1200px) {
+    .card-slider {
+      &__container {
+        width: 1000px;
+      }
+    }
+  }
+}
