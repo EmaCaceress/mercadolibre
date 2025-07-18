@@ -16,7 +16,7 @@ const slider = [
 const cards = [
   { title: "Llevate tu favorito", image: "https://http2.mlstatic.com/D_Q_NP_2X_831919-MLA80765379430_112024-AB.webp", link: "#", description: "hola" },
   { title: "Lo querés", image: "https://http2.mlstatic.com/D_Q_NP_2X_915234-MLA86560753553_062025-AB.webp", link: "#", description: "hola" },
-  { title: "Porque te interesa", image: "https://http2.mlstatic.com/D_Q_NP_2X_649930-MLA84841576185_052025-AB.webp", link: "#", description: "hola" },
+  { title: "Porque te interesa", image: "https://http2.mlstatic.com/D_Q_NP_2X_656762-MLU76340412611_052024-AB.webp", link: "#", description: "hola" },
   { title: "Comprá tu carrito", image: [
       "https://http2.mlstatic.com/D_Q_NP_2X_666676-MLA84176700768_052025-AC.webp",
       "https://http2.mlstatic.com/D_Q_NP_2X_695854-MLA80072252980_102024-AC.webp",
@@ -33,12 +33,12 @@ const cards = [
 
 // Lista de productos recomendados
 const products = [
-  { id: 1, title: "Xiaomi Redmi 14c", price: 196900, discount: null, image: "https://via.placeholder.com/150x150", oldprice: 226000},
-  { id: 2, title: "ZTE Blade A54", price: 139999, discount: "39% OFF", image: "https://via.placeholder.com/150x150", envio: "Llega gratis mañana"},
-  { id: 3, title: "TCL 505", price: 159999, discount: "30% OFF", image: "https://via.placeholder.com/150x150", cuotas: "Cuota promocionada en 6 cuotas de $30000", },
-  { id: 1, title: "Xiaomi Redmi 14c", price: 196900, discount: null, image: "https://via.placeholder.com/150x150", cuotas: "en 3 cuotas de $75499"},
-  { id: 2, title: "ZTE Blade A54", price: 139999, discount: "39% OFF", image: "https://via.placeholder.com/150x150", full: 1, envio: "Envio gratis"},
-  { id: 3, title: "TCL 505", price: 159999, discount: "30% OFF", image: "https://via.placeholder.com/150x150", },
+  { id: 1, title: "Xiaomi Redmi 14c", price: 196900, discount: null, image: "https://http2.mlstatic.com/D_Q_NP_2X_784839-MLA86924328056_072025-T.webp", envio: "Llega gratis hoy", oldPrice: "226000"},
+  { id: 2, title: "ZTE Blade A54", price: 139999, discount: "39% OFF", image: "https://http2.mlstatic.com/D_Q_NP_2X_784839-MLA86924328056_072025-T.webp", envio: "Llega gratis mañana"},
+  { id: 3, title: "TCL 505", price: 159999, discount: "30% OFF", image: "https://http2.mlstatic.com/D_Q_NP_2X_784839-MLA86924328056_072025-T.webp", cuotas: "Cuota promocionada en 6 cuotas de $30000", },
+  { id: 1, title: "Xiaomi Redmi 14c", price: 196900, discount: null, image: "https://http2.mlstatic.com/D_Q_NP_2X_784839-MLA86924328056_072025-T.webp", cuotas: "en 3 cuotas de $75499"},
+  { id: 2, title: "ZTE Blade A54", price: 139999, discount: "39% OFF", image: "https://http2.mlstatic.com/D_Q_NP_2X_784839-MLA86924328056_072025-T.webp", full: 1, envio: "Envio gratis"},
+  { id: 3, title: "TCL 505", price: 159999, discount: "30% OFF", image: "https://http2.mlstatic.com/D_Q_NP_2X_784839-MLA86924328056_072025-T.webp", },
 ];
 
 const Main = () => {
@@ -154,10 +154,14 @@ const Main = () => {
                     <p className="product-carousel__cuotas">{prod.cuotas}</p>
                   )}
 
-                  {prod.envio && (
-                    <p className="product-carousel__envio">{prod.envio}</p>
-                  )}
-
+                  {
+                    prod.envio == "llega gratis hoy" ? (
+                      <div>
+                        <p className="product-carousel__envio">{prod.envio}</p>
+                      </div>
+                      )
+                      : (<p className="product-carousel__envio">{prod.envio}</p>)
+                  }
                   {prod.full && (
                     <span className="product-carousel__full">⚡ FULL</span>
                   )}
@@ -170,24 +174,64 @@ const Main = () => {
 
       {/* Sección de beneficios Meli Plus */}
       <section className="meli-plus">
-        <h2 className="meli-plus__title">Suscribite desde $3.490/mes</h2>
-        <ul className="meli-plus__benefits">
-          <li className="meli-plus__benefit">Envíos gratis desde $15.000</li>
-          <li className="meli-plus__benefit">3 cuotas extra sin interés</li>
-          <li className="meli-plus__benefit">Pedidos gratis en restaurantes desde $4.000</li>
-        </ul>
+        <div className="meli-plus__container">
+          <div className="meli-plus__header">
+            <p className="meli-plus__suscripcion">
+              <img src="https://http2.mlstatic.com/resources/frontend/statics/loyal/partners/meliplus/home/meliplus-outline-pill@3x.png" alt="" /> Suscribite desde $3.490/mes
+            </p>
+            <button className="meli-plus__button">Suscribirme a Meli+</button>
+          </div>
+
+          <div className="meli-plus__body">
+            <h2 className="meli-plus__title">Ahorrá en tus envíos y compras</h2>
+
+            <ul className="meli-plus__benefits">
+              <li className="meli-plus__benefit">
+                <div className="meli-plus__container-i">
+                  <i class="fa-solid fa-truck"></i>
+                </div>
+                <p>Envíos gratis en millones de productos desde $15.000</p>
+              </li>
+              <li className="meli-plus__benefit">
+                <div className="meli-plus__container-i">
+                  <i class="fa-regular fa-credit-card"></i>
+                </div>
+                <p>3 cuotas extra sin interés</p>
+              </li>
+              <li className="meli-plus__benefit">
+                <div className="meli-plus__container-i">
+                  <i class="fa-solid fa-burger"></i>
+                </div>
+                <p>Envío gratis en tus pedidos de "Restaurantes" desde $4.000</p>
+              </li>
+            </ul>
+          </div>
+        </div>
       </section>
+
 
       {/* Sección de video de Mercado Play */}
       <section className="mercado-play">
-        <div className="mercado-play__overlay">
-          <h2 className="mercado-play__title">¡Series y películas también en TV!</h2>
-          <button className="mercado-play__button">Ir a Mercado Play</button>
+        <div className="mercado-play__container">
+          <img className="mercado-play__background" src="https://http2.mlstatic.com/D_NQ_803027-MLU74643615266_022024-OO.webp" alt="fondo de mercado play" />
+          <div className="mercado-play__overlay">
+            <img  className="mercado-play__badge" src="https://http2.mlstatic.com/storage/homes-korriban/assets/images/touchpoint_trailer/logo-mercado-play-v3.png" alt="Mercado Play" />
+            <div>
+              <h2 className="mercado-play__title">¡Series y películas también en TV!</h2>
+              <span className="mercado-play__label">GRATIS</span>
+            </div>
+            <div className="mercado-play__button" >Ir a mercado play</div>
+          </div>
+
+          <div className="mercado-play__video">
+            <video autoPlay muted loop>
+              <source src="https://www.w3schools.com/html/mov_bbb.mp4" type="video/mp4" />
+            </video>
+          </div>
         </div>
-        <video className="mercado-play__video" autoPlay muted loop>
-          <source src="https://www.w3schools.com/html/mov_bbb.mp4" type="video/mp4" />
-        </video>
       </section>
+
+
     </main>
   );
 };
