@@ -1,7 +1,7 @@
 // Main.jsx
 import React, { useEffect, useRef, useState } from "react";
 import "./Main.scss";
-import { FiChevronRight, FiChevronLeft } from "react-icons/fi";
+import SliderButtons from "../Botton/SliderButton";
 
 // Imágenes y datos del slider principal
 const slider = [
@@ -14,41 +14,40 @@ const slider = [
 
 // Tarjetas para el slider horizontal
 const cards = [
-  { title: "Llevate tu favorito", image: "https://http2.mlstatic.com/D_Q_NP_2X_831919-MLA80765379430_112024-AB.webp", link: "#", description: "hola" },
-  { title: "Lo querés", image: "https://http2.mlstatic.com/D_Q_NP_2X_915234-MLA86560753553_062025-AB.webp", link: "#", description: "hola" },
-  { title: "Porque te interesa", image: "https://http2.mlstatic.com/D_Q_NP_2X_656762-MLU76340412611_052024-AB.webp", link: "#", description: "hola" },
-  { title: "Comprá tu carrito", image: [
+  { id: 1, price: 139999, full: 1, envio: "Envio gratis", titleFirst: "Llevate tu favorito", image: "https://http2.mlstatic.com/D_Q_NP_2X_831919-MLA80765379430_112024-AB.webp", link: "#", description: "hola" },
+  { id: 2, titleFirst: "Lo querés", image: "https://http2.mlstatic.com/D_Q_NP_2X_915234-MLA86560753553_062025-AB.webp", link: "#", description: "hola" },
+  { id: 3, titleFirst: "Porque te interesa", oldPrice: 400000, price: 139999, discount: "39% OFF", image: "https://http2.mlstatic.com/D_Q_NP_2X_656762-MLU76340412611_052024-AB.webp", link: "#", description: "hola" },
+  { id: 4, titleFirst: "Comprá tu carrito", image: [
       "https://http2.mlstatic.com/D_Q_NP_2X_666676-MLA84176700768_052025-AC.webp",
       "https://http2.mlstatic.com/D_Q_NP_2X_695854-MLA80072252980_102024-AC.webp",
       "https://http2.mlstatic.com/D_Q_NP_2X_842813-MLU75591979177_042024-AC.webp"
     ], link: "#", description: "hola" },
-  { title: "visto recientemente", image: "https://http2.mlstatic.com/D_Q_NP_2X_649930-MLA84841576185_052025-AB.webp", link: "#", description: "hola" },
-  { title: "Medios de pago", image: "https://http2.mlstatic.com/frontend-assets/homes-palpatine/dynamic-access-desktop/payment-methods.svg", link: "#", description: "hola" },
-  { title: "Menos de $20.000", image: "https://http2.mlstatic.com/frontend-assets/homes-palpatine/dynamic-access-desktop/low-price-product.svg", link: "#", description: "hola" },
-  { title: "Mas vendidos", image: "https://http2.mlstatic.com/frontend-assets/homes-palpatine/dynamic-access-desktop/top-sale.svg", link: "#", description: "hola" },
-  { title: "Compra protegida", image: "https://http2.mlstatic.com/frontend-assets/homes-palpatine/dynamic-access-desktop/buy-protected.svg", link: "#", description: "hola" },
-  { title: "Tiendas oficiales", image: "https://http2.mlstatic.com/frontend-assets/homes-palpatine/dynamic-access-desktop/store-official.svg", link: "#", description: "hola" },
-  { title: "Nuestras categorias", image: "https://http2.mlstatic.com/frontend-assets/homes-palpatine/dynamic-access-desktop/categories.svg", link: "#", description: "hola" },
+  { id: 5, titleFirst: "visto recientemente", image: "https://http2.mlstatic.com/D_Q_NP_2X_649930-MLA84841576185_052025-AB.webp", link: "#", description: "hola" },
+  { id: 6, titleFirst: "Medios de pago", image: "https://http2.mlstatic.com/frontend-assets/homes-palpatine/dynamic-access-desktop/payment-methods.svg", link: "#", description: "hola" },
+  { id: 7, titleFirst: "Menos de $20.000", image: "https://http2.mlstatic.com/frontend-assets/homes-palpatine/dynamic-access-desktop/low-price-product.svg", link: "#", description: "hola" },
+  { id: 8, titleFirst: "Mas vendidos", image: "https://http2.mlstatic.com/frontend-assets/homes-palpatine/dynamic-access-desktop/top-sale.svg", link: "#", description: "hola" },
+  { id: 9, titleFirst: "Compra protegida", image: "https://http2.mlstatic.com/frontend-assets/homes-palpatine/dynamic-access-desktop/buy-protected.svg", link: "#", description: "hola" },
+  { id: 10, titleFirst: "Tiendas oficiales", image: "https://http2.mlstatic.com/frontend-assets/homes-palpatine/dynamic-access-desktop/store-official.svg", link: "#", description: "hola" },
+  { id: 11, titleFirst: "Nuestras categorias", image: "https://http2.mlstatic.com/frontend-assets/homes-palpatine/dynamic-access-desktop/categories.svg", link: "#", description: "hola" },
 ];
 
 // Lista de productos recomendados
 const products = [
-  { id: 1, title: "Xiaomi Redmi 14c", price: 196900, discount: null, image: "https://http2.mlstatic.com/D_Q_NP_2X_784839-MLA86924328056_072025-T.webp", envio: "Llega gratis hoy", oldPrice: "226000"},
-  { id: 2, title: "ZTE Blade A54", price: 139999, discount: "39% OFF", image: "https://http2.mlstatic.com/D_Q_NP_2X_784839-MLA86924328056_072025-T.webp", envio: "Llega gratis mañana"},
-  { id: 3, title: "TCL 505", price: 159999, discount: "30% OFF", image: "https://http2.mlstatic.com/D_Q_NP_2X_784839-MLA86924328056_072025-T.webp", cuotas: "Cuota promocionada en 6 cuotas de $30000", },
-  { id: 1, title: "Xiaomi Redmi 14c", price: 196900, discount: null, image: "https://http2.mlstatic.com/D_Q_NP_2X_784839-MLA86924328056_072025-T.webp", cuotas: "en 3 cuotas de $75499"},
-  { id: 2, title: "ZTE Blade A54", price: 139999, discount: "39% OFF", image: "https://http2.mlstatic.com/D_Q_NP_2X_784839-MLA86924328056_072025-T.webp", full: 1, envio: "Envio gratis"},
-  { id: 3, title: "TCL 505", price: 159999, discount: "30% OFF", image: "https://http2.mlstatic.com/D_Q_NP_2X_784839-MLA86924328056_072025-T.webp", },
+  { id: 1, titleSecond: "Xiaomi Redmi 14c", oldPrice: 226000, price: 196900, discount: "39% OFF", image: "https://http2.mlstatic.com/D_Q_NP_2X_784839-MLA86924328056_072025-T.webp", envio: "Llega gratis hoy"},
+  { id: 2, titleSecond: "ZTE Blade A54", price: 139999, image: "https://http2.mlstatic.com/D_Q_NP_2X_784839-MLA86924328056_072025-T.webp", envio: "Llega gratis mañana"},
+  { id: 3, titleSecond: "TCL 505", oldPrice: 200000, price: 159999, discount: "30% OFF", image: "https://http2.mlstatic.com/D_Q_NP_2X_784839-MLA86924328056_072025-T.webp", cuotas: "Cuota promocionada en 6 cuotas de $30000", },
+  { id: 4, titleSecond: "Xiaomi Redmi 14c", price: 196900, discount: null, image: "https://http2.mlstatic.com/D_Q_NP_2X_784839-MLA86924328056_072025-T.webp", cuotas: "en 3 cuotas de $75499"},
+  { id: 5, titleSecond: "ZTE Blade A54", oldPrice: 400000, price: 139999, discount: "39% OFF", image: "https://http2.mlstatic.com/D_Q_NP_2X_784839-MLA86924328056_072025-T.webp", full: 1, envio: "Envio gratis"},
+  { id: 6, titleSecond: "TCL 505", oldPrice: 200000, price: 159999, discount: "30% OFF", image: "https://http2.mlstatic.com/D_Q_NP_2X_784839-MLA86924328056_072025-T.webp", },
+  { id: 7, titleSecond: "Xiaomi Redmi 14c", oldPrice: 226000, price: 196900, discount: "39% OFF", image: "https://http2.mlstatic.com/D_Q_NP_2X_784839-MLA86924328056_072025-T.webp", envio: "Llega gratis hoy"},
+  { id: 8, titleSecond: "ZTE Blade A54", price: 139999, image: "https://http2.mlstatic.com/D_Q_NP_2X_784839-MLA86924328056_072025-T.webp", envio: "Llega gratis mañana"},
+  { id: 9, titleSecond: "TCL 505", oldPrice: 200000, price: 159999, discount: "30% OFF", image: "https://http2.mlstatic.com/D_Q_NP_2X_784839-MLA86924328056_072025-T.webp", cuotas: "Cuota promocionada en 6 cuotas de $30000", },
+  { id: 10, titleSecond: "Xiaomi Redmi 14c", price: 196900, discount: null, image: "https://http2.mlstatic.com/D_Q_NP_2X_784839-MLA86924328056_072025-T.webp", cuotas: "en 3 cuotas de $75499"},
+  { id: 11, titleSecond: "ZTE Blade A54", oldPrice: 400000, price: 139999, discount: "39% OFF", image: "https://http2.mlstatic.com/D_Q_NP_2X_784839-MLA86924328056_072025-T.webp", full: 1, envio: "Envio gratis"},
+  { id: 12, titleSecond: "TCL 505", oldPrice: 200000, price: 159999, discount: "30% OFF", image: "https://http2.mlstatic.com/D_Q_NP_2X_784839-MLA86924328056_072025-T.webp", },
 ];
 
 const Main = () => {
-  const cardWidth = 180;
-  const cardGap = 20;
-  const visibleAreaWidth = 1000;
-  const cardsPerPage = Math.floor(visibleAreaWidth / (cardWidth + cardGap));
-  const totalPages = Math.ceil(cards.length / cardsPerPage);
-
-  const [currentPage, setCurrentPage] = useState(0);
   const [index, setIndex] = useState(0);
   const sliderRef = useRef(null);
   const totalSlides = slider.length;
@@ -85,7 +84,11 @@ const Main = () => {
       <section className="hero">
         <div className="hero__slider" ref={sliderRef}>
           {[...slider, ...slider].map((item, idx) => (
-            <div className="hero__slide" key={idx} style={{ backgroundImage: `url(${item.image})` }} />
+            <div
+              className="hero__slide"
+              key={`${item.title}-${idx}`} // ahora la key es única
+              style={{ backgroundImage: `url(${item.image})` }}
+            />
           ))}
         </div>
         <div className="hero__overlay"></div>
@@ -94,21 +97,10 @@ const Main = () => {
       {/* Slider horizontal de tarjetas con flechas */}
       <section className="card-slider">
         <div className="card-slider__container">
-          {currentPage > 0 && (
-            <button
-              className="card-slider__arrow card-slider__arrow--left"
-              onClick={() => setCurrentPage(currentPage - 1)}
-            >
-              <FiChevronLeft />
-            </button>
-          )}
+          <SliderButtons slider={cards} cardw={185} cardg={15}/>
 
-          <div
+          {/* <div
             className="card-slider__slider"
-            style={{
-              transform: `translateX(-${currentPage * (cardWidth + cardGap) * cardsPerPage}px)`,
-              transition: 'transform 0.5s ease',
-            }}
           >
             {cards.map((card, idx) => (
               <div className="card-slider__card" key={idx}>
@@ -117,58 +109,14 @@ const Main = () => {
                 <div className="card-slider__description">{card.description}</div>
               </div>
             ))}
-          </div>
-
-          {currentPage < totalPages - 1 && (
-            <button
-              className="card-slider__arrow card-slider__arrow--right"
-              onClick={() => setCurrentPage(currentPage + 1)}
-            >
-              <FiChevronRight />
-            </button>
-          )}
+          </div> */}
         </div>
       </section>
 
       {/* Productos sugeridos */}
       <section className="product-carousel">
         <div className="product-carousel__container">
-          <h2 className="product-carousel__title">Inspirado en lo último que viste</h2>
-          <div className="product-carousel__list">
-            {products.map((prod) => (
-              <div className="product-carousel__card" key={prod.id}>
-                <img className="product-carousel__image" src={prod.image} alt={prod.title} />
-                <p className="product-carousel__name">{prod.title}</p>
-                <div>
-                  {prod.oldPrice && (
-                    <p className="product-carousel__old-price">${prod.oldPrice.toLocaleString()}</p>
-                  )}
-
-                  <div className="product-carousel__price">${prod.price.toLocaleString()}</div>
-
-                  {prod.discount && (
-                    <span className="product-carousel__discount">{prod.discount}</span>
-                  )}
-
-                  {prod.cuotas && (
-                    <p className="product-carousel__cuotas">{prod.cuotas}</p>
-                  )}
-
-                  {
-                    prod.envio == "llega gratis hoy" ? (
-                      <div>
-                        <p className="product-carousel__envio">{prod.envio}</p>
-                      </div>
-                      )
-                      : (<p className="product-carousel__envio">{prod.envio}</p>)
-                  }
-                  {prod.full && (
-                    <span className="product-carousel__full">⚡ FULL</span>
-                  )}
-                </div>
-              </div>
-            ))}
-          </div>
+          <SliderButtons slider={products} title={"Inspirado en lo último que viste"} cardw={170} cardg={20}/>
         </div>
       </section>
 

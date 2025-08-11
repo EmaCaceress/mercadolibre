@@ -1,14 +1,21 @@
 import React from "react";
+import { useState } from "react";
 import "./Footer.scss";
 
 const Footer = () => {
+  const [infoVisible, setInfoVisible] = useState(false);
+
+  const toggleInfo = () => {
+    setInfoVisible(!infoVisible);
+  };
+
   return (
     <footer className="footer">
       {/* Primera fila de íconos e info */}
         <div className="benefits">
 
             <div className="benefits__benefit">
-                <img src="/icons/payment.svg" alt="Elegí cómo pagar" />
+                <i class="fa-solid fa-credit-card"></i>
                 <div className="benefits__text">
                 <h3>Elegí cómo pagar</h3>
                 <p>Podés pagar con tarjeta, débito, efectivo o con Cuotas sin Tarjeta.</p>
@@ -19,7 +26,7 @@ const Footer = () => {
             <div className="benefits__divitions"/>
 
             <div className="benefits__benefit">
-                <img src="/icons/shipping.svg" alt="Envío gratis desde $ 33.000" />
+                <i class="fa-solid fa-box-archive"></i>
                 <div className="benefits__text">
                 <h3>Envío gratis desde $ 33.000</h3>
                 <p>Solo por estar registrado en Mercado Libre tenés envíos gratis en miles de productos.</p>
@@ -28,7 +35,7 @@ const Footer = () => {
 
             <div className="benefits__divitions"/>
             <div className="benefits__benefit">
-                <img src="/icons/security.svg" alt="Seguridad de principio a fin" />
+                <i class="fa-solid fa-shield"></i>
                 <div className="benefits__text">
                 <h3>Seguridad, de principio a fin</h3>
                 <p>¿No te gusta? ¡Devolvelo! En Mercado Libre, no hay nada que no puedas hacer, porque estás siempre protegido.</p>
@@ -53,13 +60,87 @@ const Footer = () => {
         </div>
       </div>
 
-      {/* Logos y contacto */}
-      <div className="footer__regulatory">
-        <p>📧 ayuda@mercadolibre.com.ar</p>
-        <div className="footer__logos">
-          <img src="/logos/ssn.svg" alt="SSN" />
-          <img src="/logos/usuarios-financieros.svg" alt="Usuarios Financieros" />
-          <img src="/logos/datos.svg" alt="Datos QR" />
+      <div className="information">
+        <div className="information__container">
+          <div className={`information__title ${infoVisible ? "visible" : "hidden"}`} onClick={toggleInfo}>
+            <h1>Mas informacion</h1>
+            <i className={`fa-solid ${infoVisible ? "fa-arrow-down" : "fa-arrow-up"}`}></i>
+          </div>
+          <div className={`information__text ${infoVisible ? "visible" : "hidden"}`}>
+            <div className="information__columns">
+              <div className="information__column">
+                <h4>Acerca de</h4>
+                <ul>
+                  <li><a href="#">Mercado Libre</a></li>
+                  <li><a href="#">Investor relations</a></li>
+                  <li><a href="#">Tendencias</a></li>
+                  <li><a href="#">Sustentabilidad</a></li>
+                  <li><a href="#">Blog</a></li>
+                </ul>
+              </div>
+
+              <div className="information__column">
+                <h4>Otros sitios</h4>
+                <ul>
+                  <li><a href="#">Developers</a></li>
+                  <li><a href="#">Mercado Pago</a></li>
+                  <li><a href="#">Mercado Shops</a></li>
+                  <li><a href="#">Envíos</a></li>
+                  <li><a href="#">Mercado Ads</a></li>
+                </ul>
+              </div>
+
+              <div className="information__column">
+                <h4>Ayuda</h4>
+                <ul>
+                  <li><a href="#">Comprar</a></li>
+                  <li><a href="#">Vender</a></li>
+                  <li><a href="#">Resolución de problemas</a></li>
+                  <li><a href="#">Centro de seguridad</a></li>
+                </ul>
+              </div>
+
+              <div className="information__column">
+                <h4>Redes sociales</h4>
+                <ul>
+                  <li><a href="#">X</a></li>
+                  <li><a href="#">Facebook</a></li>
+                  <li><a href="#">Instagram</a></li>
+                  <li><a href="#">YouTube</a></li>
+                </ul>
+              </div>
+
+              <div className="information__column">
+                <h4>Mi cuenta</h4>
+                <ul>
+                  <li><a href="#">Resumen</a></li>
+                  <li><a href="#">Favoritos</a></li>
+                  <li><a href="#">Vender</a></li>
+                </ul>
+              </div>
+
+              <div className="information__column">
+                <h4>Suscripciones</h4>
+                <ul>
+                  <li><a href="#">Meli+</a></li>
+                  <li><a href="#">Disney+</a></li>
+                  <li><a href="#">HBO Max</a></li>
+                  <li><a href="#">Paramount+</a></li>
+                  <li><a href="#">ViX Premium</a></li>
+                  <li><a href="#">Universal+</a></li>
+                </ul>
+              </div>
+
+              <div className="information__column">
+                <h4>Temporadas</h4>
+                <ul>
+                  <li><a href="#">Hot Sale</a></li>
+                  <li><a href="#">Cyber Monday</a></li>
+                  <li><a href="#">Black Friday</a></li>
+                </ul>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
 
