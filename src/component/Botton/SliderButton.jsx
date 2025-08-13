@@ -103,23 +103,22 @@ const SliderButtons = ({ slider, title, cardw, cardg }) => {
               {/* Título superior */}
               <p className="product-carousel__titleFirst">{prod.titleFirst}</p>
 
-              {
-                    console.log("esta es la cantidad de ", prod.titleFirst," de la card: ",prod.image.length)
-              }
               {/* Imagen del producto */}
+              
+              
               {
-              prod.image?.length == 3 
-                ? prod.image.map((obj, index) => {
-                    return (
+                Array.isArray(prod.image) && prod.image.length === 3 ? (
+                  <div className="product-carousel__images">
+                    {prod.image.map((obj, index) => (
                       <img
                         key={index}
-                        className="product-carousel__image"
-                        src={obj.image}
-                        alt={obj.title}
+                        className="product-carousel__image--cart"
+                        src={obj}
+                        alt={prod.title}
                       />
-                    );
-                  })
-                : (
+                    ))}
+                  </div>
+                ) : (
                   <img
                     className="product-carousel__image"
                     src={prod.image}
@@ -177,6 +176,15 @@ const SliderButtons = ({ slider, title, cardw, cardg }) => {
                   <span className="product-carousel__full">⚡ FULL</span>
                 )}
               </div>
+
+              {
+                prod.button && (
+                  <a href={prod.buttonLink} className="product-carousel__link">
+                    {prod.button}
+                  </a>
+                )
+              }
+
             </div>
           ))}
         </div>
