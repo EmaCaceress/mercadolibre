@@ -126,10 +126,13 @@ const SliderButtons = ({ slider, title, cardw, cardg }) => {
                   />
                 )
               }
+            
+            <div>
               {/* Nombre del producto */}
+              {prod.titleSecond && (
               <p className="product-carousel__name">{prod.titleSecond}</p>
+              )}
 
-              <div>
                 {/* Precio tachado (si existe) */}
                 {prod.oldPrice && (
                   <p className="product-carousel__old-price">

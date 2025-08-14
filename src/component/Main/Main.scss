@@ -182,12 +182,13 @@
       padding: 6px 12px;
       background-color: #d6e4ff; // azul muy claro
       color: #1a73e8;             // azul de enlace
-      font-size: 14px;
+      font-size: $text-font-size-xs;
       font-weight: 500;
       border-radius: 6px;
       text-decoration: none;
       transition: background-color 0.2s ease, color 0.2s ease;
       text-align: center;        // centra el texto
+      white-space: nowrap;
       &:hover {
         background-color: #b3ccff;// un poco más oscuro al pasar el mouse
         color: #0b5ed7;
@@ -195,6 +196,7 @@
     }
 
     &__titleFirst{
+      padding-top: 10px;
       font-weight: 700;
       font-size: $text-font-size-sm;
     }
@@ -228,13 +230,16 @@
     &__full {
       color: $color-green;
       font-size: 0.8rem;
+      white-space: nowrap;
     }
 
     &__envio{
       font-size: $text-font-size-sm;
       font-weight: 900;
-      white-space: nowrap;
       display: inline-block;
+    }
+    &__cuotas{
+      white-space: wrap;
     }
 
     .hoy{

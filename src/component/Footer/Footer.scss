@@ -81,7 +81,7 @@
   
       &__box {
         padding: 1rem 1rem;
-        width: 40%;
+        width: 560px;
         border: 1px rgba($color-text-grey,0.3) solid;
         border-radius: $radius-md;
         text-align: center;
@@ -89,7 +89,7 @@
         justify-content: center;
         flex-direction: column;
         &:nth-child(1){
-          margin-right: 3%;
+          margin-right: 80px;
         }
         h4 {
           margin-bottom: 0.5rem;

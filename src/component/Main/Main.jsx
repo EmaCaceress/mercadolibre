@@ -97,19 +97,7 @@ const Main = () => {
       {/* Slider horizontal de tarjetas con flechas */}
       <section className="card-slider">
         <div className="card-slider__container">
-          <SliderButtons slider={cards} cardw={185} cardg={15}/>
-
-          {/* <div
-            className="card-slider__slider"
-          >
-            {cards.map((card, idx) => (
-              <div className="card-slider__card" key={idx}>
-                <h3 className="card-slider__title">{card.title}</h3>
-                <img className="card-slider__image" src={Array.isArray(card.image) ? card.image[0] : card.image} alt={card.title} />
-                <div className="card-slider__description">{card.description}</div>
-              </div>
-            ))}
-          </div> */}
+          <SliderButtons slider={cards} cardw={180} cardg={20}/>
         </div>
       </section>
 
