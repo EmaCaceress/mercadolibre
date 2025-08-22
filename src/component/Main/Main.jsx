@@ -1,7 +1,7 @@
 // Main.jsx
 import React, { useEffect, useRef, useState } from "react";
 import "./Main.scss";
-import SliderButtons from "../Botton/SliderButton";
+import SliderButtons from "../SliderButton/SliderButton";
 
 // Imágenes y datos del slider principal
 const slider = [
@@ -51,6 +51,19 @@ const Main = () => {
   const [index, setIndex] = useState(0);
   const sliderRef = useRef(null);
   const totalSlides = slider.length;
+  const [productsMeli, setProductsMeli] = useState([]);
+  const [query, setQuery] = useState("playstation");
+  const [page, setPage] = useState(0); // control de página
+  const limit = 10;
+
+  useEffect(() => {
+    fetch(`https://api.mercadolibre.com/sites/MLA/search?q=${query}&limit=${limit}&offset=${page * limit}`)
+      .then(res => res.json())
+      .then(data => {
+        setProductsMeli(data.results);
+      })
+      .catch(err => console.error(err));
+  }, [query]);
 
   // Rotación automática del slider principal
   useEffect(() => {
@@ -74,6 +87,10 @@ const Main = () => {
       }, 1100);
     }
   }, [index, totalSlides]);
+
+  useEffect(() => {
+    console.log(productsMeli);
+  })
 
   return (
     <main className="main">

@@ -2,6 +2,7 @@ import React from 'react';
 import './Navbar.scss';
 import { Search } from 'lucide-react';
 import { Bell, ShoppingCart } from 'lucide-react'; // o usa íconos SVG propios
+import { Link } from "react-router-dom";
 
 const Navbar = () => {
   return (
@@ -9,10 +10,12 @@ const Navbar = () => {
       <div className="navbar__container">
         {/* LOGO DE MERCADO LIBRE */}
         <div className="navbar__logo">
+          <Link to={`/`}>
           <img
             src="https://http2.mlstatic.com/frontend-assets/ml-web-navigation/ui-navigation/6.6.130/mercadolibre/logo_large_plus@2x.webp"
             alt="Logo Mercado Libre"
           />
+          </Link>
         </div>
 
         {/* BUSCADOR */}
