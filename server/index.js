@@ -1,127 +1,143 @@
 require("dotenv").config();
 const express = require("express");
 const axios = require("axios");
+const bodyParser = require("body-parser");
+
 const app = express();
+const PORT = 4000;
 
-const PORT = process.env.PORT || 4000;
+// Variables de entorno (usa dotenv)
+const CLIENT_ID = process.env.CLIENT_ID;
+const CLIENT_SECRET = process.env.CLIENT_SECRET;
+const REDIRECT_URI = process.env.REDIRECT_URI_NGROK;
 
-// Variables para guardar tokens (en producción deberías usar DB)
 let accessToken = null;
 let refreshToken = null;
-let tokenExpires = null;
+let tokenExpiry = null;
 
-// Ruta inicial
+async function authMiddleware(req, res, next) {
+  const ahora = Date.now() / 1000; // segundos
+
+  // Si no hay token o está por expirar en menos de 1 minuto
+  if (!accessToken || ahora > tokenExpiry - 60) {
+    try {
+      const response = await axios.post(
+        "https://api.mercadolibre.com/oauth/token",
+        new URLSearchParams({
+          grant_type: "refresh_token",
+          client_id: CLIENT_ID,
+          client_secret: CLIENT_SECRET,
+          refresh_token: refreshToken
+        }),
+        {
+          headers: { "Content-Type": "application/x-www-form-urlencoded" }
+        }
+      );
+
+      accessToken = response.data.access_token;
+      refreshToken = response.data.refresh_token;
+      tokenExpiry = (Date.now() / 1000) + response.data.expires_in;
+
+      console.log("🔄 Token renovado automáticamente");
+    } catch (err) {
+      console.error("Error al refrescar token:", err.response?.data || err.message);
+      return res.status(401).json({ error: "Token inválido, vuelve a loguearte" });
+    }
+  }
+
+  // Guardar el token en la request para que lo usen las rutas
+  req.accessToken = accessToken;
+  next();
+}
+
+
+app.use(bodyParser.json());
+
 app.get("/", (req, res) => {
+  console.log("Estas en el inicio");
   res.send(`
-    <h2>Servidor Express funcionando 🚀</h2>
-    <a href="/login">🔑 Iniciar sesión con Mercado Libre</a>
+    <html>
+      <head><title>Mi página</title></head>
+      <body>
+        <h1>Hola desde Express 🚀</h1>
+      </body>
+    </html>
   `);
 });
 
-// Ruta de login -> redirige al login de Mercado Libre
+// Paso 1: Redirigir al login de Mercado Libre
 app.get("/login", (req, res) => {
-  const authUrl = `https://auth.mercadolibre.com.ar/authorization?response_type=code&client_id=${process.env.CLIENT_ID}&redirect_uri=${process.env.REDIRECT_URI}`;
+  console.log("Estas en el login");
+  const authUrl = process.env.AUTENTICATION;
   res.redirect(authUrl);
 });
 
-// Callback de Mercado Libre
+// Paso 2: Callback que recibe el "code"
 app.get("/auth/callback", async (req, res) => {
+  console.log("Estas en la auth");
   const { code } = req.query;
-
-  if (!code) {
-    return res.status(400).send("❌ No se recibió el code de autorización");
-  }
 
   try {
     const response = await axios.post(
       "https://api.mercadolibre.com/oauth/token",
       new URLSearchParams({
         grant_type: "authorization_code",
-        client_id: process.env.CLIENT_ID,
-        client_secret: process.env.CLIENT_SECRET,
+        client_id: CLIENT_ID,
+        client_secret: CLIENT_SECRET,
         code,
-        redirect_uri: process.env.REDIRECT_URI,
+        redirect_uri: REDIRECT_URI,
       }),
-      { headers: { "Content-Type": "application/x-www-form-urlencoded" } }
+      {
+        headers: {
+          "Content-Type": "application/x-www-form-urlencoded",
+        },
+      }
     );
 
-    // Guardamos tokens en memoria
+    const data = response.data; // contiene access_token, refresh_token, etc.
+    console.log("Token recibido:", data);
     accessToken = response.data.access_token;
     refreshToken = response.data.refresh_token;
-    tokenExpires = Date.now() + response.data.expires_in * 1000;
+    tokenExpiry = (Date.now() / 1000) + data.expires_in; // fecha exacta de vencimiento
+    console.log("Expira en:", new Date(tokenExpiry * 1000).toLocaleString());
 
-    res.send(`
-      ✅ Autenticación exitosa!<br/>
-      🔑 Access Token: ${accessToken}<br/>
-      🔄 Refresh Token: ${refreshToken}<br/>
-      ⏰ Expira en: ${response.data.expires_in} segundos<br/>
-      <a href="/me">👉 Ver mis datos</a>
-    `);
+    res.json(data);
   } catch (error) {
-    console.error(error.response?.data || error.message);
-    res.status(500).send("❌ Error al obtener el token");
+    console.error("Error al obtener el token:", error.response?.data || error.message);
+    res.status(500).json({ error: "No se pudo obtener el token" });
   }
 });
 
-// Función para refrescar el token
-async function refreshAccessToken() {
+// PETICION DE PRODUCTOS
+app.get("/producto/:id", authMiddleware, async (req, res) => {
+  const { id } = req.params;
+
   try {
-    const response = await axios.post(
-      "https://api.mercadolibre.com/oauth/token",
-      new URLSearchParams({
-        grant_type: "refresh_token",
-        client_id: process.env.CLIENT_ID,
-        client_secret: process.env.CLIENT_SECRET,
-        refresh_token: refreshToken,
-      }),
-      { headers: { "Content-Type": "application/x-www-form-urlencoded" } }
-    );
-
-    accessToken = response.data.access_token;
-    refreshToken = response.data.refresh_token;
-    tokenExpires = Date.now() + response.data.expires_in * 1000;
-
-    console.log("🔄 Token refrescado correctamente");
-  } catch (error) {
-    console.error("❌ Error al refrescar token:", error.response?.data || error.message);
-  }
-}
-
-// Middleware para asegurar token válido
-async function ensureToken(req, res, next) {
-  if (!accessToken) {
-    return res.status(401).send("⚠️ No estás autenticado, hacé login en /login");
-  }
-
-  if (Date.now() > tokenExpires) {
-    console.log("⏰ Token expirado, refrescando...");
-    await refreshAccessToken();
-  }
-
-  next();
-}
-
-app.get("/health", (req, res) => {
-    res.json({
-      up: true,
-      clientIdLoaded: !!process.env.CLIENT_ID,
-      redirectUriLoaded: !!process.env.REDIRECT_URI,
-    });
-  });
-  
-// Ruta para obtener info del usuario logueado
-app.get("/me", ensureToken, async (req, res) => {
-  try {
-    const response = await axios.get("https://api.mercadolibre.com/users/me", {
-      headers: { Authorization: `Bearer ${accessToken}` },
+    const response = await axios.get(`https://api.mercadolibre.com/products/${id}/items`, {
+      headers: {
+        Authorization: `Bearer ${req.accessToken}`
+      }
     });
 
+    // Podés filtrar la info que quieras enviar al front
+    // const data = {
+    //   titulo: response.data.title,
+    //   precio: response.data.price,
+    //   imagenes: response.data.pictures.map(p => p.url),
+    //   envioGratis: response.data.shipping.free_shipping
+    // };
+
+    console.log(response.data);
     res.json(response.data);
   } catch (error) {
-    res.status(500).json(error.response?.data || { error: error.message });
-  }
+    console.error(error.response?.data || error.message);
+    res.status(error.response?.status || 500).json({
+      error: "Error al obtener el producto",
+      detalle: error.response?.data || error.message
+    });
+  }  
 });
 
 app.listen(PORT, () => {
-  console.log(`🚀 Servidor corriendo en http://localhost:${PORT}`);
+  console.log(`Servidor corriendo en http://localhost:${PORT}`);
 });
