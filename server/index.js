@@ -37,8 +37,8 @@ async function authMiddleware(req, res, next) {
       accessToken = response.data.access_token;
       refreshToken = response.data.refresh_token;
       tokenExpiry = (Date.now() / 1000) + response.data.expires_in;
-
-      console.log("🔄 Token renovado automáticamente");
+      
+      console.log("🔄 Token renovado automáticamente: ", accessToken);
     } catch (err) {
       console.error("Error al refrescar token:", err.response?.data || err.message);
       return res.status(401).json({ error: "Token inválido, vuelve a loguearte" });
@@ -57,9 +57,21 @@ app.get("/", (req, res) => {
   console.log("Estas en el inicio");
   res.send(`
     <html>
-      <head><title>Mi página</title></head>
+      <head>
+        <title>Mi página</title>
+      </head>
       <body>
         <h1>Hola desde Express 🚀</h1>
+
+        <!-- Botón para logearte automático -->
+        <button onclick="window.location.href='/login'">
+          Login automático
+        </button>
+
+        <!-- Botón para ir directo al producto -->
+        <button onclick="window.location.href='/producto/MLA2013547858'">
+          Ir al producto
+        </button>
       </body>
     </html>
   `);
@@ -101,7 +113,7 @@ app.get("/auth/callback", async (req, res) => {
     tokenExpiry = (Date.now() / 1000) + data.expires_in; // fecha exacta de vencimiento
     console.log("Expira en:", new Date(tokenExpiry * 1000).toLocaleString());
 
-    res.json(data);
+    res.redirect(`https://3734e531711b.ngrok-free.app/?token=${data.access_token}`);
   } catch (error) {
     console.error("Error al obtener el token:", error.response?.data || error.message);
     res.status(500).json({ error: "No se pudo obtener el token" });
@@ -118,17 +130,35 @@ app.get("/producto/:id", authMiddleware, async (req, res) => {
         Authorization: `Bearer ${req.accessToken}`
       }
     });
-
-    // Podés filtrar la info que quieras enviar al front
-    // const data = {
-    //   titulo: response.data.title,
-    //   precio: response.data.price,
-    //   imagenes: response.data.pictures.map(p => p.url),
-    //   envioGratis: response.data.shipping.free_shipping
-    // };
-
     console.log(response.data);
-    res.json(response.data);
+    async function getItemData(item) {
+      const { data } = await axios.get(
+        `https://api.mercadolibre.com/products/${item.item_id}`, // OJO: acá es /items/, no /products/
+        {
+          headers: { Authorization: `Bearer ${req.accessToken}` }
+        }
+      );
+
+      return {
+        id: item.item_id,
+        seller_id: item.seller_id,
+        precio: item.price,
+        category_id: item.category_id,
+        detail: {
+          name: data.title,
+          status: data.status,
+          pictures: data.pictures.map(picture => ({
+            id: picture.id,
+            url: picture.url,
+            max_width: picture.max_size?.width, 
+            min_width: picture.size
+          }))
+        }
+      };
+    }
+
+    const items = await Promise.all(response.data.results.map(getItemData));
+
   } catch (error) {
     console.error(error.response?.data || error.message);
     res.status(error.response?.status || 500).json({
