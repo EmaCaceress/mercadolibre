@@ -161,7 +161,7 @@ const SliderButtons = ({ slider, title, cardw, cardg }) => {
                 )}
 
                 {/* Envío (si existe)*/}
-                {prod.envio === "llega gratis hoy" ? (
+                {prod.envio.time === "llega gratis hoy" ? (
                   <div>
                     <p className="slider-button__envio">{prod.envio}</p>
                   </div>
@@ -176,7 +176,7 @@ const SliderButtons = ({ slider, title, cardw, cardg }) => {
                 )}
 
                 {/* Sello FULL (si existe)*/}
-                {prod.full && (
+                {(prod.envio.time && prod.envio.full) && (
                   <span className="slider-button__full">⚡ FULL</span>
                 )}
               </div>

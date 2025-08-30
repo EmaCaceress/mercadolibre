@@ -32,20 +32,20 @@ const cards = [
 ];
 
 // Lista de productos recomendados
-const products = [
-  { id: 1, titleSecond: "Xiaomi Redmi 14c", oldPrice: 226000, price: 196900, discount: "39% OFF", image: "https://http2.mlstatic.com/D_Q_NP_2X_784839-MLA86924328056_072025-T.webp", envio: "Llega gratis hoy"},
-  { id: 2, titleSecond: "ZTE Blade A54", price: 139999, image: "https://http2.mlstatic.com/D_Q_NP_2X_784839-MLA86924328056_072025-T.webp", envio: "Llega gratis mañana"},
-  { id: 3, titleSecond: "TCL 505", oldPrice: 200000, price: 159999, discount: "30% OFF", image: "https://http2.mlstatic.com/D_Q_NP_2X_784839-MLA86924328056_072025-T.webp", cuotas: "Cuota promocionada en 6 cuotas de $30000", },
-  { id: 4, titleSecond: "Xiaomi Redmi 14c", price: 196900, discount: null, image: "https://http2.mlstatic.com/D_Q_NP_2X_784839-MLA86924328056_072025-T.webp", cuotas: "en 3 cuotas de $75499"},
-  { id: 5, titleSecond: "ZTE Blade A54", oldPrice: 400000, price: 139999, discount: "39% OFF", image: "https://http2.mlstatic.com/D_Q_NP_2X_784839-MLA86924328056_072025-T.webp", full: 1, envio: "Envio gratis"},
-  { id: 6, titleSecond: "TCL 505", oldPrice: 200000, price: 159999, discount: "30% OFF", image: "https://http2.mlstatic.com/D_Q_NP_2X_784839-MLA86924328056_072025-T.webp", },
-  { id: 7, titleSecond: "Xiaomi Redmi 14c", oldPrice: 226000, price: 196900, discount: "39% OFF", image: "https://http2.mlstatic.com/D_Q_NP_2X_784839-MLA86924328056_072025-T.webp", envio: "Llega gratis hoy"},
-  { id: 8, titleSecond: "ZTE Blade A54", price: 139999, image: "https://http2.mlstatic.com/D_Q_NP_2X_784839-MLA86924328056_072025-T.webp", envio: "Llega gratis mañana"},
-  { id: 9, titleSecond: "TCL 505", oldPrice: 200000, price: 159999, discount: "30% OFF", image: "https://http2.mlstatic.com/D_Q_NP_2X_784839-MLA86924328056_072025-T.webp", cuotas: "Cuota promocionada en 6 cuotas de $30000", },
-  { id: 10, titleSecond: "Xiaomi Redmi 14c", price: 196900, discount: null, image: "https://http2.mlstatic.com/D_Q_NP_2X_784839-MLA86924328056_072025-T.webp", cuotas: "en 3 cuotas de $75499"},
-  { id: 11, titleSecond: "ZTE Blade A54", oldPrice: 400000, price: 139999, discount: "39% OFF", image: "https://http2.mlstatic.com/D_Q_NP_2X_784839-MLA86924328056_072025-T.webp", full: 1, envio: "Envio gratis"},
-  { id: 12, titleSecond: "TCL 505", oldPrice: 200000, price: 159999, discount: "30% OFF", image: "https://http2.mlstatic.com/D_Q_NP_2X_784839-MLA86924328056_072025-T.webp", },
-];
+// const products = [
+//   { id: 1, titleSecond: "Xiaomi Redmi 14c", oldPrice: 226000, price: 196900, discount: "39% OFF", image: "https://http2.mlstatic.com/D_Q_NP_2X_784839-MLA86924328056_072025-T.webp", envio: "Llega gratis hoy"},
+//   { id: 2, titleSecond: "ZTE Blade A54", price: 139999, image: "https://http2.mlstatic.com/D_Q_NP_2X_784839-MLA86924328056_072025-T.webp", envio: "Llega gratis mañana"},
+//   { id: 3, titleSecond: "TCL 505", oldPrice: 200000, price: 159999, discount: "30% OFF", image: "https://http2.mlstatic.com/D_Q_NP_2X_784839-MLA86924328056_072025-T.webp", cuotas: "Cuota promocionada en 6 cuotas de $30000", },
+//   { id: 4, titleSecond: "Xiaomi Redmi 14c", price: 196900, discount: null, image: "https://http2.mlstatic.com/D_Q_NP_2X_784839-MLA86924328056_072025-T.webp", cuotas: "en 3 cuotas de $75499"},
+//   { id: 5, titleSecond: "ZTE Blade A54", oldPrice: 400000, price: 139999, discount: "39% OFF", image: "https://http2.mlstatic.com/D_Q_NP_2X_784839-MLA86924328056_072025-T.webp", full: 1, envio: "Envio gratis"},
+//   { id: 6, titleSecond: "TCL 505", oldPrice: 200000, price: 159999, discount: "30% OFF", image: "https://http2.mlstatic.com/D_Q_NP_2X_784839-MLA86924328056_072025-T.webp", },
+//   { id: 7, titleSecond: "Xiaomi Redmi 14c", oldPrice: 226000, price: 196900, discount: "39% OFF", image: "https://http2.mlstatic.com/D_Q_NP_2X_784839-MLA86924328056_072025-T.webp", envio: "Llega gratis hoy"},
+//   { id: 8, titleSecond: "ZTE Blade A54", price: 139999, image: "https://http2.mlstatic.com/D_Q_NP_2X_784839-MLA86924328056_072025-T.webp", envio: "Llega gratis mañana"},
+//   { id: 9, titleSecond: "TCL 505", oldPrice: 200000, price: 159999, discount: "30% OFF", image: "https://http2.mlstatic.com/D_Q_NP_2X_784839-MLA86924328056_072025-T.webp", cuotas: "Cuota promocionada en 6 cuotas de $30000", },
+//   { id: 10, titleSecond: "Xiaomi Redmi 14c", price: 196900, discount: null, image: "https://http2.mlstatic.com/D_Q_NP_2X_784839-MLA86924328056_072025-T.webp", cuotas: "en 3 cuotas de $75499"},
+//   { id: 11, titleSecond: "ZTE Blade A54", oldPrice: 400000, price: 139999, discount: "39% OFF", image: "https://http2.mlstatic.com/D_Q_NP_2X_784839-MLA86924328056_072025-T.webp", full: 1, envio: "Envio gratis"},
+//   { id: 12, titleSecond: "TCL 505", oldPrice: 200000, price: 159999, discount: "30% OFF", image: "https://http2.mlstatic.com/D_Q_NP_2X_784839-MLA86924328056_072025-T.webp", },
+// ];
 
 const Main = () => {
   const [index, setIndex] = useState(0);
@@ -55,16 +55,17 @@ const Main = () => {
   const [query, setQuery] = useState("playstation");
   const [page, setPage] = useState(0); // control de página
   const limit = 10;
+  const [products, setProducts] = useState([]);
 
   useEffect(() => {
-    fetch(`https://api.mercadolibre.com/sites/MLA/search?q=${query}&limit=${limit}&offset=${page * limit}`)
+    fetch("http://localhost:4000/products")
       .then(res => res.json())
       .then(data => {
-        setProductsMeli(data.results);
+        setProducts(data.items);
       })
-      .catch(err => console.error(err));
-  }, [query]);
-
+      .catch(err => console.error("Error al traer productos:", err));
+  }, []);
+ 
   // Rotación automática del slider principal
   useEffect(() => {
     const interval = setInterval(() => {
