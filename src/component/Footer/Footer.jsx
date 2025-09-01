@@ -15,7 +15,7 @@ const Footer = () => {
         <div className="benefits">
 
             <div className="benefits__benefit">
-                <i class="fa-solid fa-credit-card"></i>
+                <i className="fa-solid fa-credit-card"></i>
                 <div className="benefits__text">
                 <h3>Elegí cómo pagar</h3>
                 <p>Podés pagar con tarjeta, débito, efectivo o con Cuotas sin Tarjeta.</p>
@@ -26,7 +26,7 @@ const Footer = () => {
             <div className="benefits__divitions"/>
 
             <div className="benefits__benefit">
-                <i class="fa-solid fa-box-archive"></i>
+                <i className="fa-solid fa-box-archive"></i>
                 <div className="benefits__text">
                 <h3>Envío gratis desde $ 33.000</h3>
                 <p>Solo por estar registrado en Mercado Libre tenés envíos gratis en miles de productos.</p>
@@ -35,7 +35,7 @@ const Footer = () => {
 
             <div className="benefits__divitions"/>
             <div className="benefits__benefit">
-                <i class="fa-solid fa-shield"></i>
+                <i className="fa-solid fa-shield"></i>
                 <div className="benefits__text">
                 <h3>Seguridad, de principio a fin</h3>
                 <p>¿No te gusta? ¡Devolvelo! En Mercado Libre, no hay nada que no puedas hacer, porque estás siempre protegido.</p>

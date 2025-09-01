@@ -89,10 +89,6 @@ const Main = () => {
     }
   }, [index, totalSlides]);
 
-  useEffect(() => {
-    console.log(productsMeli);
-  })
-
   return (
     <main className="main">
 
@@ -142,19 +138,19 @@ const Main = () => {
             <ul className="meli-plus__benefits">
               <li className="meli-plus__benefit">
                 <div className="meli-plus__container-i">
-                  <i class="fa-solid fa-truck"></i>
+                  <i className="fa-solid fa-truck"></i>
                 </div>
                 <p>Envíos gratis en millones de productos desde $15.000</p>
               </li>
               <li className="meli-plus__benefit">
                 <div className="meli-plus__container-i">
-                  <i class="fa-regular fa-credit-card"></i>
+                  <i className="fa-regular fa-credit-card"></i>
                 </div>
                 <p>3 cuotas extra sin interés</p>
               </li>
               <li className="meli-plus__benefit">
                 <div className="meli-plus__container-i">
-                  <i class="fa-solid fa-burger"></i>
+                  <i className="fa-solid fa-burger"></i>
                 </div>
                 <p>Envío gratis en tus pedidos de "Restaurantes" desde $4.000</p>
               </li>

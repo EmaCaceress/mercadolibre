@@ -96,7 +96,7 @@ const SliderButtons = ({ slider, title, cardw, cardg }) => {
           }}
         >
           {slider.map((prod) => (
-            <Link to={`/producto/1`}
+            <Link to={`/products/${prod.id}`}
               className="slider-button__card"
               key={prod.id}
               style={{ minWidth: `${cardWidth}px` }}
@@ -160,32 +160,29 @@ const SliderButtons = ({ slider, title, cardw, cardg }) => {
                   <p className="slider-button__cuotas">{prod.cuotas}</p>
                 )}
 
-                {/* Envío (si existe)*/}
-                {prod.envio.time === "llega gratis hoy" ? (
-                  <div>
-                    <p className="slider-button__envio">{prod.envio}</p>
-                  </div>
-                ) : (
+                {/* Envío (si existe) */}
+                {prod.envio ? (
                   <p
                     className={`slider-button__envio ${
-                      prod.envio ? "hoy" : ""
+                      prod.envio.time === "Llega gratis hoy" ? "hoy" : ""
                     }`}
                   >
-                    {prod.envio}
+                    {prod.envio.time}
                   </p>
-                )}
+                ) : null}
 
-                {/* Sello FULL (si existe)*/}
-                {(prod.envio.time && prod.envio.full) && (
+                {/* Sello FULL (si existe) */}
+                {prod.envio?.time && prod.envio?.full && (
                   <span className="slider-button__full">⚡ FULL</span>
                 )}
+
               </div>
 
               {
                 prod.button && (
-                  <a href={prod.buttonLink} className="slider-button__link">
+                  <div href={prod.buttonLink} className="slider-button__link">
                     {prod.button}
-                  </a>
+                  </div>
                 )
               }
             </Link>

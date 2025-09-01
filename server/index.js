@@ -32,6 +32,7 @@ const tCache = new Map();
 // ---------------------------------------------------
 // Helpers de precio
 // ---------------------------------------------------
+
 function convertPriceUSD(priceUSD, _currency, rate) {
   // Hoy forzamos salida en ARS, multiplicando por la tasa
   const value = priceUSD * rate;
@@ -56,8 +57,7 @@ function formatCurrency(value, currency) {
 const envioOptions = [
   "Envio gratis",
   "Llega gratis mañana",
-  "Llega gratis hoy",
-  null 
+  "Llega gratis hoy"
 ];
 
 function getRandomEnvio() {
@@ -130,7 +130,7 @@ app.get("/products", async (req, res) => {
         discount: Math.round(Math.random()) == 0 && p.discountPercentage ? `${Math.round(p.discountPercentage)}% OFF` : null,
         image: p.thumbnail,
         envio: envio ? {
-          time: envio == 0 && getRandomEnvio(), 
+          time: getRandomEnvio(), 
           full: envio == 0 && Math.round(Math.random()) == 0 ? null : 1
         } : null,
         cuotas: cuota % 3 === 0  ? `Cuota promocionada en ${cuota} cuotas de $${Math.round(priceConv.value/cuota)}` : null,
@@ -157,26 +157,28 @@ app.get("/products/:id", async (req, res) => {
   try {
     const { data: p } = await axios.get(`${BASE}/products/${req.params.id}`);
     const priceConv = convertPriceUSD(p.price, currency, rate);
-    const priceFormatted =
-      priceConv.currency === "ARS" ? formatCurrency(priceConv.value, "ARS") : `$${p.price}`;
+    const cuota = Math.round(Math.random() * 12) ;
+    const envio = Math.round(Math.random());
 
-
-    res.json({
-      id: p.id,
-      titleSecond: p.title, // Cambié 'title' por 'titleSecond'
-      oldPrice: (Math.round(((priceConv.value * p.discountPercentage)/100) + priceConv.value)), // Si no existe 'oldPrice', le asigno null
-      price: priceConv.value,
-      discount: p.discountPercentage ? `${Math.round(p.discountPercentage)}% OFF` : null, // Formato de descuento
-      image: p.thumbnail, // 'thumbnail' lo cambié por 'image'
-      envio: p.shipping ? p.shipping.free_shipping ? "Llega gratis hoy" : "Llega gratis mañana" : null, // Ejemplo de asignación, si tienes un campo de 'envio' o algo similar
-      cuotas: p.installments ? `Cuota promocionada en ${p.installments.quantity} cuotas de $${p.installments.amount}` : null, // Asignación para cuotas, si aplica
-      currency: "ARS", // O cualquier otra moneda que manejes
-      rating: p.rating, // Si tienes rating
-      stock: p.stock, // Si tienes stock
-      brand: p.brand, // Si tienes la marca
-      category: categoryMap[p.category] || p.category, // Asignación de categoría
-      images: p.images, // Si tienes más imágenes
-    });
+      items.push({
+        id: p.id,
+        titleSecond: p.title, 
+        oldPrice: (Math.round(((priceConv.value * p.discountPercentage)/100) + priceConv.value)), 
+        price: priceConv.value,
+        discount: Math.round(Math.random()) == 0 && p.discountPercentage ? `${Math.round(p.discountPercentage)}% OFF` : null,
+        image: p.thumbnail,
+        envio: envio ? {
+          time: getRandomEnvio(), 
+          full: envio == 0 && Math.round(Math.random()) == 0 ? null : 1
+        } : null,
+        cuotas: cuota % 3 === 0  ? `Cuota promocionada en ${cuota} cuotas de $${Math.round(priceConv.value/cuota)}` : null,
+        currency: "ARS",
+        rating: p.rating,
+        stock: p.stock, 
+        brand: p.brand, 
+        category: categoryMap[p.category] || p.category,
+        images: p.images, 
+      });
   } catch (e) {
     const status = e.response?.status || 500;
     console.error(e?.message || e);

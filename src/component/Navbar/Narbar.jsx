@@ -37,7 +37,7 @@ const Navbar = () => {
 
         {/* UBICACION */}
         <div className='navbar__ubication'> 
-          <i class="fa-solid fa-location-dot" size={20}></i>
+          <i className="fa-solid fa-location-dot" size={20}></i>
           <div>
             <div>Emanuel Chacon</div>
             <div>Calle 111 1473</div>
