@@ -125,6 +125,7 @@ app.get("/products", async (req, res) => {
       items.push({
         id: p.id,
         titleSecond: p.title, 
+        description: p.description,
         oldPrice: (Math.round(((priceConv.value * p.discountPercentage)/100) + priceConv.value)), 
         price: priceConv.value,
         discount: Math.round(Math.random()) == 0 && p.discountPercentage ? `${Math.round(p.discountPercentage)}% OFF` : null,
@@ -160,24 +161,25 @@ app.get("/products/:id", async (req, res) => {
     const cuota = Math.round(Math.random() * 12) ;
     const envio = Math.round(Math.random());
 
-      items.push({
-        id: p.id,
-        titleSecond: p.title, 
-        oldPrice: (Math.round(((priceConv.value * p.discountPercentage)/100) + priceConv.value)), 
-        price: priceConv.value,
-        discount: Math.round(Math.random()) == 0 && p.discountPercentage ? `${Math.round(p.discountPercentage)}% OFF` : null,
-        image: p.thumbnail,
-        envio: envio ? {
-          time: getRandomEnvio(), 
-          full: envio == 0 && Math.round(Math.random()) == 0 ? null : 1
-        } : null,
+    res.json({
+      id: p.id,
+      titleSecond: p.title, 
+      description: p.description,
+      oldPrice: (Math.round(((priceConv.value * p.discountPercentage)/100) + priceConv.value)), 
+      price: priceConv.value,
+      discount: Math.round(Math.random()) == 0 && p.discountPercentage ? `${Math.round(p.discountPercentage)}% OFF` : null,
+      image: p.thumbnail,
+      envio: envio ? {
+        time: getRandomEnvio(), 
+        full: envio == 0 && Math.round(Math.random()) == 0 ? null : 1
+      } : null,
         cuotas: cuota % 3 === 0  ? `Cuota promocionada en ${cuota} cuotas de $${Math.round(priceConv.value/cuota)}` : null,
-        currency: "ARS",
-        rating: p.rating,
-        stock: p.stock, 
-        brand: p.brand, 
-        category: categoryMap[p.category] || p.category,
-        images: p.images, 
+      currency: "ARS",
+      rating: p.rating,
+      stock: p.stock, 
+      brand: p.brand, 
+      category: categoryMap[p.category] || p.category,
+      images: p.images,
       });
   } catch (e) {
     const status = e.response?.status || 500;

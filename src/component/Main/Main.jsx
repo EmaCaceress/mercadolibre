@@ -51,10 +51,6 @@ const Main = () => {
   const [index, setIndex] = useState(0);
   const sliderRef = useRef(null);
   const totalSlides = slider.length;
-  const [productsMeli, setProductsMeli] = useState([]);
-  const [query, setQuery] = useState("playstation");
-  const [page, setPage] = useState(0); // control de página
-  const limit = 10;
   const [products, setProducts] = useState([]);
 
   useEffect(() => {
