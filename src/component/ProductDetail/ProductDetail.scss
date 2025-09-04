@@ -328,11 +328,10 @@ $ProductDetail-bg: #fff;
 .ProductDetail-related {
   display: flex;
   flex-direction: column;
-  align-items: center;
 
   &__container {
-    padding: $padding-xl;
-    width: 1200px;
-    position: relative; 
+    width: $max-width-container;
+    padding: $padding-sm 0;
+    position: relative;
   }
 }

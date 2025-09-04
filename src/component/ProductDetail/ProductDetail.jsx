@@ -3,27 +3,6 @@ import { useParams } from "react-router-dom";
 import "./ProductDetail.scss";
 import SliderButtons from "../SliderButton/SliderButton";
 
-const fakeReviews = [
-  {
-    id: 1,
-    stars: 5,
-    date: "03 mar. 2025",
-    text:
-      "Buena relación producto/calidad. Obviamente hay productos mejores, pero no en esta gama de precios. El mismo problema que todas las proteínas que he consumido, le cuesta disolverse.",
-    helpful: 12,
-  },
-  { id: 2, stars: 5, date: "03 feb. 2025", text: "Excelente.", helpful: 7 },
-  { id: 3, stars: 3, date: "01 nov. 2023", text: "Se hace grumo.", helpful: 3 },
-];
-
-const related = [
-  { id: 1, title: "Vaso Shaker Flip 500 ml", price: 6160, img: "/images/shaker-1.png" },
-  { id: 2, title: "Shaker Everlast Premium", price: 14240, img: "/images/shaker-2.png" },
-  { id: 3, title: "Shaker Everlast Hermético", price: 13999, img: "/images/shaker-3.png" },
-  { id: 4, title: "Shaker Everlast Anti Grumos", price: 16814, img: "/images/shaker-4.png" },
-  { id: 5, title: "Vaso Shaker Flip 500 ml", price: 6545, img: "/images/shaker-5.png" },
-];
-
 const StarRow = ({ value = 0 }) => (
   <div className="ProductDetail-reviews__stars" aria-label={`Puntaje ${value} de 5`}>
     {Array.from({ length: 5 }).map((_, i) => (
@@ -41,11 +20,12 @@ const ProductDetail = () => {
     const { id } = useParams(); // 👈 captura el id de la URL
 
     const [descOpen, setDescOpen] = useState(false);
-    const avg = 4.8;
-    const counts = { 5: 12, 4: 5, 3: 1, 2: 0, 1: 1 };
-    const total = Object.values(counts).reduce((a, b) => a + b, 0);
+    const [avg, setAvg] = useState(0);
+    const [counts, setCounts] = useState({});
+    const [total, setTotal] = useState(0);
 
     const [desplaceY, setDesplaceY] = useState(0);
+
     const [productId, setProductId] = useState(null);
     const [products, setProducts] = useState([]);
 
@@ -100,6 +80,18 @@ const ProductDetail = () => {
         return () => { cancelled = true; controller.abort(); };
     }, [id]); // <- IMPORTANTE
       
+    useEffect(() => {
+      // productId puede ser null al primer render => usá optional chaining y valores por defecto
+      const ratings = productId?.rewiews?.map(r => Number(r.rating)) ?? [];
+
+      // sumatoria y promedio seguros
+      const totalAvg = ratings.reduce((acc, n) => acc + (Number.isFinite(n) ? n : 0), 0);
+      const avgStars = ratings.length ? totalAvg / ratings.length : 0;
+
+      const totalList = Object.values(counts).reduce((a, b) => a + b, 0);
+
+      setAvg(Math.round(avgStars)+".0")
+    },[productId])
 
     useEffect(() => {
       fetch("http://localhost:4000/products")
@@ -219,7 +211,7 @@ const ProductDetail = () => {
                   <div className="ProductDetail-payment__logos">
                     <img
                       className="ProductDetail-payment__img"
-                      src="https://http2.mlstatic.com/frontend-assets/mp-web-navigation/ui-navigation/5.23.1/mercadopago.svg"
+                      src="https://http2.mlstatic.com/storage/logos-api-admin/f3e8e940-f549-11ef-bad6-e9962bcd76e5-m.svg"
                       alt="Mercado Pago"
                     />
                   </div>
@@ -235,7 +227,7 @@ const ProductDetail = () => {
                     />
                     <img
                       className="ProductDetail-payment__img"
-                      src="https://upload.wikimedia.org/wikipedia/commons/3/30/American_Express_logo_%282018%29.svg"
+                      src="https://http2.mlstatic.com/storage/logos-api-admin/b2c93a40-f3be-11eb-9984-b7076edb0bb7-m.svg"
                       alt="American Express"
                     />
                     <img
@@ -245,7 +237,7 @@ const ProductDetail = () => {
                     />
                     <img
                       className="ProductDetail-payment__img"
-                      src="https://upload.wikimedia.org/wikipedia/commons/4/4f/Tarjeta_Naranja_logo.svg"
+                      src="https://http2.mlstatic.com/storage/logos-api-admin/d72276d0-0fda-11ec-8aae-e5acfdd60b03-m.svg"
                       alt="Naranja X"
                     />
                   </div>
@@ -261,12 +253,12 @@ const ProductDetail = () => {
                     />
                     <img
                       className="ProductDetail-payment__img"
-                      src="https://upload.wikimedia.org/wikipedia/commons/6/6b/Maestro_logo.svg"
+                      src="https://http2.mlstatic.com/storage/logos-api-admin/93296a70-72fe-11f0-8778-e777036b3e93-m.svg"
                       alt="Maestro"
                     />
                     <img
                       className="ProductDetail-payment__img"
-                      src="https://upload.wikimedia.org/wikipedia/commons/6/6a/Cabal_logo.svg"
+                      src="https://http2.mlstatic.com/storage/logos-api-admin/cb0af1c0-f3be-11eb-8e0d-6f4af49bf82e-m.svg"
                       alt="Cabal"
                     />
                     <img
@@ -282,12 +274,12 @@ const ProductDetail = () => {
                   <div className="ProductDetail-payment__logos">
                     <img
                       className="ProductDetail-payment__img"
-                      src="https://seeklogo.com/images/P/pago-facil-logo-9FDD4E2E04-seeklogo.com.png"
+                      src="https://http2.mlstatic.com/storage/logos-api-admin/fec5f230-06ee-11ea-8e1e-273366cc763d-m.svg"
                       alt="Pago Fácil"
                     />
                     <img
                       className="ProductDetail-payment__img"
-                      src="https://seeklogo.com/images/R/rapipago-logo-CC030FCD7A-seeklogo.com.png"
+                      src="https://http2.mlstatic.com/storage/logos-api-admin/6d575650-dbc3-11ee-a55a-bbc538356ab8-m.svg"
                       alt="Rapipago"
                     />
                   </div>
@@ -351,7 +343,7 @@ const ProductDetail = () => {
             <aside className="ProductDetail-reviews__summary">
               <div className="ProductDetail-reviews__avg">
                 <div className="ProductDetail-reviews__avg-score">{avg}</div>
-                <StarRow value={5} />
+                <StarRow value={avg} />
               </div>
 
               <ul className="ProductDetail-reviews__bars" aria-label="Distribución de calificaciones">
@@ -387,10 +379,11 @@ const ProductDetail = () => {
 
             {/* Lista de comentarios */}
             <div className="ProductDetail-reviews__list">
-              {fakeReviews.map((r) => (
-                <article key={r.id} className="ProductDetail-reviews__item">
-                  <StarRow value={r.stars} />
-                  <p className="ProductDetail-reviews__text">{r.text}</p>
+            { console.log(productId.rewiews)}
+              {productId.rewiews?.map((r, index) => (
+                <article key={index} className="ProductDetail-reviews__item">
+                  <StarRow value={r.rating} />
+                  <p className="ProductDetail-reviews__text">{r.comment}</p>
                   <div className="ProductDetail-reviews__meta">
                     <time className="ProductDetail-reviews__date">{r.date}</time>
                     <button className="ProductDetail-reviews__help">
@@ -410,7 +403,7 @@ const ProductDetail = () => {
           <SliderButtons
             slider={products}
             title={"Quienes compraron este producto también compraron"}
-            cardw={175}
+            cardw={180}
             cardg={20}
           />
         </div>

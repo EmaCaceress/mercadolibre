@@ -177,6 +177,7 @@ app.get("/products/:id", async (req, res) => {
         cuotas: cuota % 3 === 0  ? `Cuota promocionada en ${cuota} cuotas de $${Math.round(priceConv.value/cuota)}` : null,
       currency: "ARS",
       rating: p.rating,
+      rewiews:p.reviews,
       stock: p.stock, 
       brand: p.brand, 
       category: categoryMap[p.category] || p.category,
