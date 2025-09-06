@@ -65,16 +65,27 @@ $ProductDetail-bg: #fff;
   justify-content: space-between;
   width: 80%;
   padding: 0px 20px;
+  height: 100%;
   & div:nth-child(1){
-    border: 1px solid $ProductDetail-border;
     border-radius: 12px;
     width: 80px;
+    .thumb {
+      cursor: pointer;
+      padding: 2px;
+      border: 2px solid transparent;
+      border-radius: 4px;
+    
+      &--active {
+        border-color: #3483fa; // azul Mercado Libre
+      }
+    }
   }
   &__img {
     border-radius: 8px;
     display: block;
     background: #f9f9f9;
     object-fit: contain;
+    height: 100%;
   }
 }
 
@@ -331,7 +342,7 @@ $ProductDetail-bg: #fff;
 
   &__container {
     width: $max-width-container;
-    padding: $padding-sm 0;
+    padding: $padding-xl 0;
     position: relative;
   }
 }

@@ -174,7 +174,7 @@ app.get("/products/:id", async (req, res) => {
         time: getRandomEnvio(), 
         full: envio == 0 && Math.round(Math.random()) == 0 ? null : 1
       } : null,
-        cuotas: cuota % 3 === 0  ? `Cuota promocionada en ${cuota} cuotas de $${Math.round(priceConv.value/cuota)}` : null,
+        cuotas: cuota % 3 === 0 && cuota !== 0 ? `Cuota promocionada en ${cuota} cuotas de $${Math.round(priceConv.value/cuota)}` : null,
       currency: "ARS",
       rating: p.rating,
       rewiews:p.reviews,

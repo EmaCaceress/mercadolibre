@@ -23,12 +23,12 @@ const ProductDetail = () => {
     const [avg, setAvg] = useState(0);
     const [counts, setCounts] = useState({});
     const [total, setTotal] = useState(0);
-
+   
     const [desplaceY, setDesplaceY] = useState(0);
 
     const [productId, setProductId] = useState(null);
     const [products, setProducts] = useState([]);
-
+    const [imagen, setImagen] = useState(null);
     // useEffect(() => {
     //   const sidebar = document.querySelector(".ProductDetail-bar__container");
     //   const container = document.querySelector(".ProductDetail-bar");
@@ -74,12 +74,19 @@ const ProductDetail = () => {
             }
         }
         
+        
         setProductId(null);  // fuerza estado "Cargando..." mientras cambia
         load();
         
         return () => { cancelled = true; controller.abort(); };
     }, [id]); // <- IMPORTANTE
-      
+
+    useEffect(() => {
+      if (productId) {
+        setImagen(productId.image ?? productId.images?.[0] ?? null);
+      }
+    }, [productId]);
+
     useEffect(() => {
       // productId puede ser null al primer render => usá optional chaining y valores por defecto
       const ratings = productId?.rewiews?.map(r => Number(r.rating)) ?? [];
@@ -88,8 +95,24 @@ const ProductDetail = () => {
       const totalAvg = ratings.reduce((acc, n) => acc + (Number.isFinite(n) ? n : 0), 0);
       const avgStars = ratings.length ? totalAvg / ratings.length : 0;
 
-      const totalList = Object.values(counts).reduce((a, b) => a + b, 0);
+      const reviews = productId?.rewiews ?? [];
 
+      const counts = reviews.reduce(
+        (acc, { rating }) => {
+          const r = Math.trunc(Number(rating));
+          if (r >= 1 && r <= 5) {
+            acc[r] = (acc[r] ?? 0) + 1;
+          }
+          return acc;
+        },
+        { 5: 0, 4: 0, 3: 0, 2: 0, 1: 0 } // inicialización
+      );
+      
+      console.log(counts);
+      setCounts(counts);
+      const totalList = Object.values(counts).reduce((a, b) => a + b, 0);
+      console.log(totalList)
+      setTotal(totalList)
       setAvg(Math.round(avgStars)+".0")
     },[productId])
 
@@ -103,6 +126,10 @@ const ProductDetail = () => {
     }, []);
 
     if (!productId) return <p>Cargando...</p>;  
+
+    const onImageHover = (src) => {
+      setImagen(src);
+    }
 
     return (
     <section className="ProductDetail-section" key={id}>
@@ -123,12 +150,19 @@ const ProductDetail = () => {
       <div className="ProductDetail-section__container">
         {/* MEDIA */}
         <article className="ProductDetail-media">
-          <div>{/* carrousel de imagenes */}</div>
+
+          <div className="ProductDetail-media__carrousel">
+              {productId.images.map((img,index) => (
+               <div key={index} onClick={() => onImageHover(img)} className={`thumb ${imagen === img ? "thumb--active" : ""}`}>
+                    <img src={img} alt="carrousel" />
+                </div>
+              ))}
+          </div>
 
           <div>
             <img
               className="ProductDetail-media__img"
-              src={productId.image}
+              src={imagen}
               alt={productId.titleSecond}
             />
           </div>
@@ -152,8 +186,8 @@ const ProductDetail = () => {
 
                   <div className="ProductDetail-detail__meta">
                     <div className="ProductDetail-detail__rating">
-                      <StarRow value={productId.rating} />
-                      <span className="ProductDetail-detail__rating-text">{Math.round(productId.rating)} (19)</span>
+                      <StarRow value={avg} />
+                      <span className="ProductDetail-detail__rating-text">{avg} ({total})</span>
                     </div>
                   </div>
                 </div>
@@ -379,7 +413,6 @@ const ProductDetail = () => {
 
             {/* Lista de comentarios */}
             <div className="ProductDetail-reviews__list">
-            { console.log(productId.rewiews)}
               {productId.rewiews?.map((r, index) => (
                 <article key={index} className="ProductDetail-reviews__item">
                   <StarRow value={r.rating} />
