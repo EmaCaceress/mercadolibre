@@ -128,7 +128,7 @@ const SliderButtons = ({ slider, title, cardw, cardg }) => {
                 )
               }
             
-            <div>
+            <div className="slider-button__container">
               {/* Nombre del producto */}
               {prod.titleSecond && (
               <p className="slider-button__name">{prod.titleSecond}</p>

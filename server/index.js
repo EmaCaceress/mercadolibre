@@ -121,20 +121,21 @@ app.get("/products", async (req, res) => {
       const priceConv = convertPriceUSD(p.price, currency, rate);
       const cuota = Math.round(Math.random() * 12) ;
       const envio = Math.round(Math.random());
+      const descuento = Math.round(Math.random());
 
       items.push({
         id: p.id,
         titleSecond: p.title, 
         description: p.description,
-        oldPrice: (Math.round(((priceConv.value * p.discountPercentage)/100) + priceConv.value)), 
-        price: priceConv.value,
-        discount: Math.round(Math.random()) == 0 && p.discountPercentage ? `${Math.round(p.discountPercentage)}% OFF` : null,
+        oldPrice: descuento == 0 ? (Math.round(((priceConv.value * p.discountPercentage)/100) + priceConv.value)) : null, 
+        price: Math.round(priceConv.value),
+        discount: descuento == 0 && p.discountPercentage ? `${Math.round(p.discountPercentage)}% OFF` : null,
         image: p.thumbnail,
-        envio: envio ? {
+        envio: envio == 1 ? {
           time: getRandomEnvio(), 
           full: envio == 0 && Math.round(Math.random()) == 0 ? null : 1
         } : null,
-        cuotas: cuota % 3 === 0  ? `Cuota promocionada en ${cuota} cuotas de $${Math.round(priceConv.value/cuota)}` : null,
+        cuotas: cuota % 3 === 0  && !envio && cuota !== 0 ? `Cuota promocionada en ${cuota} cuotas de $${Math.round(priceConv.value/cuota)}` : null,
         currency: "ARS",
         rating: p.rating,
         rewiews:p.reviews,
@@ -167,7 +168,7 @@ app.get("/products/:id", async (req, res) => {
       titleSecond: p.title, 
       description: p.description,
       oldPrice: (Math.round(((priceConv.value * p.discountPercentage)/100) + priceConv.value)), 
-      price: priceConv.value,
+      price: Math.round(priceConv.value),
       discount: Math.round(Math.random()) == 0 && p.discountPercentage ? `${Math.round(p.discountPercentage)}% OFF` : null,
       image: p.thumbnail,
       envio: envio ? {

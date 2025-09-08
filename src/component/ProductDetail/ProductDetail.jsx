@@ -1,8 +1,18 @@
+// =====================
+// Imports
+// =====================
 import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import "./ProductDetail.scss";
 import SliderButtons from "../SliderButton/SliderButton";
 
+// =====================
+// UI helpers (componentes puros / presentacionales)
+// =====================
+/**
+ * Fila de estrellas de calificacion
+ * - value: numero de 0 a 5
+ */
 const StarRow = ({ value = 0 }) => (
   <div className="ProductDetail-reviews__stars" aria-label={`Puntaje ${value} de 5`}>
     {Array.from({ length: 5 }).map((_, i) => (
@@ -16,19 +26,30 @@ const StarRow = ({ value = 0 }) => (
   </div>
 );
 
+// =====================
+// Componente principal: ProductDetail
+// - Trae producto por id, maneja imagenes y calificaciones
+// =====================
 const ProductDetail = () => {
     const { id } = useParams(); // 👈 captura el id de la URL
 
+    // ---------------------
+    // Estados de UI
+    // ---------------------
     const [descOpen, setDescOpen] = useState(false);
     const [avg, setAvg] = useState(0);
     const [counts, setCounts] = useState({});
     const [total, setTotal] = useState(0);
    
+    // Control del desplazamiento de la barra lateral (sticky)
     const [desplaceY, setDesplaceY] = useState(0);
 
+    // ---------------------
+    // Estados de datos
+    // ---------------------
     const [productId, setProductId] = useState(null);
     const [products, setProducts] = useState([]);
-    const [imagen, setImagen] = useState(null);
+    const [imagen, setImagen] = useState(null); // imagen seleccionada a mostrar en grande
     // useEffect(() => {
     //   const sidebar = document.querySelector(".ProductDetail-bar__container");
     //   const container = document.querySelector(".ProductDetail-bar");
@@ -51,6 +72,9 @@ const ProductDetail = () => {
     //   return () => window.removeEventListener("scroll", onScroll);
     // }, []);
 
+    // ---------------------
+    // Efecto 1: traer producto por id
+    // ---------------------
     useEffect(() => {
         let cancelled = false;
         const controller = new AbortController();
@@ -81,12 +105,18 @@ const ProductDetail = () => {
         return () => { cancelled = true; controller.abort(); };
     }, [id]); // <- IMPORTANTE
 
+    // ---------------------
+    // Efecto 2: setear imagen inicial
+    // ---------------------
     useEffect(() => {
       if (productId) {
-        setImagen(productId.image ?? productId.images?.[0] ?? null);
+        setImagen( productId.images?.[0] ?? null);
       }
     }, [productId]);
 
+    // ---------------------
+    // Efecto 3: calcular ratings y conteos
+    // ---------------------
     useEffect(() => {
       // productId puede ser null al primer render => usá optional chaining y valores por defecto
       const ratings = productId?.rewiews?.map(r => Number(r.rating)) ?? [];
@@ -116,6 +146,9 @@ const ProductDetail = () => {
       setAvg(Math.round(avgStars)+".0")
     },[productId])
 
+    // ---------------------
+    // Efecto 4: traer productos relacionados (slider)
+    // ---------------------
     useEffect(() => {
       fetch("http://localhost:4000/products")
         .then(res => res.json())
@@ -127,12 +160,19 @@ const ProductDetail = () => {
 
     if (!productId) return <p>Cargando...</p>;  
 
+    // ---------------------
+    // Handlers (eventos de UI)
+    // ---------------------
     const onImageHover = (src) => {
       setImagen(src);
     }
 
+    // ---------------------
+    // Render
+    // ---------------------
     return (
     <section className="ProductDetail-section" key={id}>
+      {/* Migas / enlaces superiores */}
       <div className="ProductDetail-link">
         <ul className="ProductDetail-link__list">
           <li>Volver</li>
@@ -148,7 +188,7 @@ const ProductDetail = () => {
       </div>
 
       <div className="ProductDetail-section__container">
-        {/* MEDIA */}
+        {/* ===================== MEDIA (galeria e imagen principal) ===================== */}
         <article className="ProductDetail-media">
 
           <div className="ProductDetail-media__carrousel">
@@ -168,13 +208,14 @@ const ProductDetail = () => {
           </div>
         </article>
 
+        {/* ===================== BARRA DERECHA (detalle y pagos) ===================== */}
         <section className="ProductDetail-bar">
           <div
             className="ProductDetail-bar__container"
             style={desplaceY <= 0 && { top: "16px" }}
             // : {transform: `translateY(${desplaceY}px)`}
           >
-            {/* DETALLE */}
+            {/* ---- DETALLE DEL PRODUCTO ---- */}
             <section className="ProductDetail-detail">
               <div className="ProductDetail-detail__container">
                 <div>
@@ -235,7 +276,7 @@ const ProductDetail = () => {
               </div>
             </section>
 
-            {/* PAGOS */}
+            {/* ---- PAGOS ---- */}
             <section className="ProductDetail-payment">
               <div className="ProductDetail-payment__container">
                 <h3 className="ProductDetail-payment__title">Medios de pago</h3>
@@ -328,6 +369,7 @@ const ProductDetail = () => {
         </section>
 
         {/* DESCRIPCIÓN (2da imagen) */}
+        {/* ===================== DESCRIPCION ===================== */}
         <section className="ProductDetail-description">
           <h2 className="ProductDetail-description__title">Descripción</h2>
 
@@ -365,7 +407,7 @@ const ProductDetail = () => {
           </button>
         </section>
 
-        {/* COMENTARIOS (3ra imagen) */}
+        {/* ===================== COMENTARIOS / REVIEWS ===================== */}
         <section className="ProductDetail-reviews">
           <div className="ProductDetail-reviews__header">
             <h2 className="ProductDetail-reviews__title">Opiniones destacadas</h2>
@@ -430,7 +472,7 @@ const ProductDetail = () => {
         </section>
       </div>
 
-      {/* RELACIONADOS (al cierre) */}
+      {/* ===================== RELACIONADOS (al cierre) ===================== */}
       <section className="ProductDetail-related">
         <div className="ProductDetail-related__container">
           <SliderButtons

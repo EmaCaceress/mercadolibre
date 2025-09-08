@@ -70,13 +70,13 @@ $ProductDetail-bg: #fff;
     border-radius: 12px;
     width: 80px;
     .thumb {
+      margin-bottom: 10px;
       cursor: pointer;
       padding: 2px;
-      border: 2px solid transparent;
+      border: 1px solid $color-search; 
       border-radius: 4px;
-    
       &--active {
-        border-color: #3483fa; // azul Mercado Libre
+        border: 2px solid #3483fa; // azul Mercado Libre
       }
     }
   }
