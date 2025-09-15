@@ -1,8 +1,8 @@
 import React from 'react';
 import './Navbar.scss';
-import { Search } from 'lucide-react';
 import { Bell, ShoppingCart } from 'lucide-react'; // o usa íconos SVG propios
 import { Link } from "react-router-dom";
+import SearchBar from '../SearchBar/SearchBar';
 
 const Navbar = () => {
   return (
@@ -19,13 +19,7 @@ const Navbar = () => {
         </div>
 
         {/* BUSCADOR */}
-        <div className="navbar__search">
-          <input type="text" placeholder="Buscar productos, marcas y más..." />
-          <button>
-            <div className='navbar__search__divider'></div>
-            <Search size={20} />
-          </button>
-        </div>
+        <SearchBar />
 
         {/* PUBLICIDAD */}
         <div className="navbar__publicity">
