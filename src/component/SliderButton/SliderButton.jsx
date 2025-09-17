@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { FiChevronRight, FiChevronLeft } from "react-icons/fi";
 import "./SliderButton.scss"; // Estilos específicos del componente
 import { Link } from "react-router-dom";
+import Card from "../Card/Card";
 
 /**
  * SliderButtons
@@ -96,96 +97,7 @@ const SliderButtons = ({ slider, title, cardw, cardg }) => {
           }}
         >
           {slider.map((prod) => (
-            <Link to={`/products/${prod.id}`}
-              className="slider-button__card"
-              key={prod.id}
-              style={{ minWidth: `${cardWidth}px` }}
-            >
-              {/* Título superior */}
-              <p className="slider-button__titleFirst">{prod.titleFirst}</p>
-
-              {/* Imagen del producto */}
-              
-              
-              {
-                Array.isArray(prod.image) && prod.image.length === 3 ? (
-                  <div className="slider-button__images">
-                    {prod.image.map((obj, index) => (
-                      <img
-                        key={index}
-                        className="slider-button__image--cart"
-                        src={obj}
-                        alt={prod.title}
-                      />
-                    ))}
-                  </div>
-                ) : (
-                  <img
-                    className="slider-button__image"
-                    src={prod.image}
-                    alt={prod.title}
-                  />
-                )
-              }
-            
-            <div className="slider-button__container">
-              {/* Nombre del producto */}
-              {prod.titleSecond && (
-              <p className="slider-button__name">{prod.titleSecond}</p>
-              )}
-
-                {/* Precio tachado (si existe) */}
-                {prod.oldPrice && (
-                  <p className="slider-button__old-price">
-                    ${prod.oldPrice.toLocaleString()}
-                  </p>
-                )}
-
-                {/* Precio actual con descuento (si existe) */}
-                {prod.price && (
-                  <div className="slider-button__containerPrice">
-                    <div className="slider-button__price">
-                      ${prod.price.toLocaleString()}
-                    </div>
-                    {prod.discount && (
-                      <span className="slider-button__discount">
-                        {prod.discount}
-                      </span>
-                    )}
-                  </div>
-                )}
-
-                {/* Cuotas disponibles (si existe)*/}
-                {prod.cuotas && (
-                  <p className="slider-button__cuotas">{prod.cuotas}</p>
-                )}
-
-                {/* Envío (si existe) */}
-                {prod.envio ? (
-                  <p
-                    className={`slider-button__envio ${
-                      prod.envio.time === "Llega gratis hoy" ? "hoy" : ""
-                    }`}
-                  >
-                    {prod.envio.time}
-                  </p>
-                ) : null}
-
-                {/* Sello FULL (si existe) */}
-                {prod.envio?.time && prod.envio?.full && (
-                  <span className="slider-button__full">⚡ FULL</span>
-                )}
-
-              </div>
-
-              {
-                prod.button && (
-                  <div href={prod.buttonLink} className="slider-button__link">
-                    {prod.button}
-                  </div>
-                )
-              }
-            </Link>
+            <Card prod={prod} cardWidth={cardWidth}/>
           ))}
         </div>
       </div>

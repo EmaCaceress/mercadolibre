@@ -1,66 +1,16 @@
 import { useEffect, useMemo, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import "./SearchPage.scss";
+import Card from "../Card/Card";
 
 function useQuery() {
   const { search } = useLocation();
   return useMemo(() => new URLSearchParams(search), [search]);
 }
 
-const fmt = new Intl.NumberFormat("es-AR", {
-  style: "currency",
-  currency: "ARS",
-  maximumFractionDigits: 0,
-});
-
 // Base del backend (Express)
 const API_BASE = "http://localhost:4000";
 
-function normalizeItem(p) {
-  if (!p) return null;
-  const price = Number(p.price_ars ?? p.price ?? 0);
-  const title = p.titleSecond ?? p.title ?? "";
-  const thumb = p.thumbnail || p.image || p.images?.[0] || "";
-  const rating = Number(p.rating ?? 0);
-  const free_shipping = Boolean(p.free_shipping || p.envio?.free || p.envio?.full);
-  const discount = Number(p.discountPercentage ?? p.discount ?? 0);
-  return {
-    id: p.id,
-    title,
-    thumb,
-    price,
-    priceText: p.price_formatted || (price ? fmt.format(price) : ""),
-    rating,
-    free_shipping,
-    discount,
-  };
-}
-
-async function fetchSearchData(q, limit, skip) {
-  // 1) Intento contra /search
-  try {
-    const r = await fetch(
-      `${API_BASE}/search?q=${encodeURIComponent(q)}&limit=${limit}&skip=${skip}`
-    );
-    if (r.ok) {
-      const data = await r.json(); // { total, products:[...] }
-      const raw = data.products || data.items || data.results || [];
-      return { total: data.total ?? raw.length, items: raw };
-    }
-  } catch (_) {}
-
-  // 2) Fallback: /products y filtro en front
-  const r2 = await fetch(`${API_BASE}/products?limit=${limit}&skip=${skip}`);
-  const d2 = await r2.json(); // { total, items:[...] }
-  const pool = d2.items || d2.products || [];
-  const filtered = q
-    ? pool.filter((p) => (p.title || "").toLowerCase().includes(q.toLowerCase()))
-    : pool;
-  return {
-    total: q ? filtered.length : d2.total ?? filtered.length,
-    items: filtered,
-  };
-}
 
 export default function SearchPage() {
   const params = useQuery();
@@ -68,11 +18,10 @@ export default function SearchPage() {
   const page = Math.max(1, Number(params.get("page") || 1));
   const limit = 24;
   const skip = (page - 1) * limit;
-
-  const [loading, setLoading] = useState(true);
-  const [items, setItems] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [products, setProducts] = useState([]);
   const [total, setTotal] = useState(0);
-  // Estado local para switches (decorativo por ahora)
+  const pages = Math.ceil(total / limit);
   const [f, setF] = useState({
     arrivesToday: false,
     fullShipping: false,
@@ -80,32 +29,16 @@ export default function SearchPage() {
     freeShipping: false,
     bestInstallments: false,
   });
-
   useEffect(() => {
-    let cancel = false;
-    (async () => {
-      setLoading(true);
-      const { total, items } = await fetchSearchData(q, limit, skip);
-      if (!cancel) {
-        setItems(items.map(normalizeItem).filter(Boolean));
-        setTotal(total);
-        setLoading(false);
-        window.scrollTo(0, 0);
-      }
-    })().catch((e) => {
-      if (!cancel) {
-        console.error("Error en la búsqueda:", e?.message || e);
-        setItems([]);
-        setTotal(0);
-        setLoading(false);
-      }
-    });
-    return () => {
-      cancel = true;
-    };
-  }, [q, page]);
+    fetch(`${API_BASE}/search?q=${encodeURIComponent(q)}&limit=${limit}&skip=${skip}`)
+      .then(res => res.json())
+      .then(data => {
+        setProducts(data.items);
+      })
+      .catch(err => console.error("Error al traer productos:", err));
 
-  const pages = Math.max(1, Math.ceil(total / limit));
+      setTotal(products.length);
+  }, [q, page]);
 
   return (
     <div className="SearchPageGrid">
@@ -116,7 +49,6 @@ export default function SearchPage() {
 
           </h1>
           {!loading && <small className="spg__count"> {total} resultados</small>}
-          
         </header>
 
         {loading && <div className="spg__loading">Cargando…</div>}
@@ -214,55 +146,14 @@ export default function SearchPage() {
 
             {/* Listado de productos */}
             <div className="spg__main">
-              {items.length === 0 && (
+              {products.length === 0 && (
                 <div className="spg__empty">No encontramos resultados.</div>
               )}
 
-              {items.length > 0 && (
+              {products.length > 0 && (
                 <div className="spg__grid">
-                  {items.map((p) => (
-                    <article key={p.id} className="card">
-                      <Link to={`/products/${p.id}`} className="card__imgWrap">
-                        <img src={p.thumb} alt={p.title} loading="lazy" />
-                      </Link>
-
-                      <div className="card__body">
-                        <Link to={`/products/${p.id}`} className="card__title">
-                          {p.title}
-                        </Link>
-
-                        <div className="card__priceRow">
-                          <div className="card__price">{p.priceText}</div>
-                          {p.discount > 0 && (
-                            <span className="card__off">
-                              {Math.round(p.discount)}% OFF
-                            </span>
-                          )}
-                        </div>
-
-                        {p.price > 0 && (
-                          <div className="card__installments">
-                            Mismo precio 3 cuotas de
-                            {" "}
-                            {fmt.format(Math.round(p.price / 3))}
-                          </div>
-                        )}
-
-                        <div className="card__meta">
-                          {p.rating > 0 && (
-                            <span
-                              className="card__stars"
-                              aria-label={`Rating ${p.rating} de 5`}
-                            >
-                              {"★".repeat(Math.round(p.rating)).padEnd(5, "☆")}
-                            </span>
-                          )}
-                          {p.free_shipping && (
-                            <span className="card__ship">Envío gratis • FULL</span>
-                          )}
-                        </div>
-                      </div>
-                    </article>
+                  {products.map((p) => (
+                    <Card prod={p} cardWidth={"170"}/>
                   ))}
                 </div>
               )}

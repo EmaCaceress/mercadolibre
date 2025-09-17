@@ -1,0 +1,124 @@
+@import '../../assets/styles/variables';
+
+.card {
+    background: $color-white;
+    min-width: 170px;
+    border-radius: $radius-md;
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+    font-family: $text-font-family;
+    font-size: $text-font-size-md;
+    font-weight: bold;
+    padding: 0px 10px;
+
+  &__images {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    grid-template-rows: auto auto;
+    gap: 8px;
+  }
+  &__image {
+    width: 100%;
+    max-height: 300px;
+    object-fit: contain;
+    &--individual{
+      width: 100%; // o el tamaño que quieras
+      height: 100%;
+      object-fit: cover;
+    }
+    &--cart{
+      width: 100px; // o el tamaño que quieras
+      height: auto;
+      object-fit: cover;
+      border-radius: 6px;
+      &:nth-child(1) {
+        grid-column: 1 / -1; // ocupa toda la primera fila
+        justify-self: center;
+        align-self: center;
+      }
+      &:nth-child(2) {
+        grid-column: 1 / 2; // ocupa la mitad izquierda de la segunda fila
+      }
+      &:nth-child(3) {
+        grid-column: 2 / 3; // ocupa la mitad derecha de la segunda fila        
+      }
+    }
+  }
+  &__link {
+    display: inline-block;
+    padding: 6px 12px;
+    background-color: #d6e4ff; // azul muy claro
+    color: #1a73e8;             // azul de enlace
+    font-size: $text-font-size-xs;
+    font-weight: 500;
+    border-radius: 6px;
+    text-decoration: none;
+    transition: background-color 0.2s ease, color 0.2s ease;
+    text-align: center;        // centra el texto
+    white-space: nowrap;
+    &:hover {
+      background-color: #b3ccff;// un poco más oscuro al pasar el mouse
+      color: #0b5ed7;
+    }
+  }
+
+  &__titleFirst{
+    padding-top: 10px;
+    font-weight: 700;
+    font-size: $text-font-size-sm;
+  }
+
+  &__name {
+    margin-bottom: $margin-sm;
+    font-size: $text-font-size-sm;
+    font-weight: 100;
+  }
+
+  &__containerPrice{
+    display: flex;
+    gap:1rem;
+    align-items: center;
+  }
+
+  &__old-price {
+    font-size: 0.85rem;
+    color: #999;
+    text-decoration: line-through;
+  }
+
+  &__price {
+    font-size: $text-font-size-lg;
+    font-weight: 100;
+  }
+
+  &__discount,
+  &__cuotas,
+  &__envio,
+  &__full {
+    color: $color-green;
+    font-size: 0.8rem;
+    white-space: nowrap;
+  }
+
+  &__envio{
+    font-size: $text-font-size-sm;
+    font-weight: 900;
+    display: inline-block;
+  }
+  &__cuotas{
+    white-space: wrap;
+  }
+
+  .hoy{
+    background-color: rgba($color-green,0.1);
+    border-radius: $radius-sm;
+    display: inline;
+    padding: 0 $padding-sm;
+  }
+
+  &__full {
+    font-weight: bold;
+    font-size: 0.75rem;
+  }
+}
