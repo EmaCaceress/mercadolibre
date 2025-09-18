@@ -37,9 +37,10 @@ export default function SearchPage() {
       })
       .catch(err => console.error("Error al traer productos:", err));
 
-      setTotal(products.length);
+
   }, [q, page]);
 
+  useEffect(() => {setTotal(products.length)}, [products]);
   return (
     <div className="SearchPageGrid">
       <section className="spg__container">

@@ -1,6 +1,7 @@
 import "./Card.scss";
 import { Link } from "react-router-dom";
 import React, { useEffect, useState } from "react";
+import Star from "../Star/Star";
 
 const Card = ({prod, cardWidth}) => {
     console.log(prod)
@@ -44,6 +45,15 @@ const Card = ({prod, cardWidth}) => {
         {prod.titleSecond && (
         <p className="card__name">{prod.titleSecond}</p>
         )}
+
+        {
+            cardWidth >= "170" && (
+                <div>
+                    <p className="card__name--extra">{prod.brand}</p>
+                    <Star value={Math.round(prod.rating)}/> 
+                </div>
+            )
+        }
 
         {/* Precio tachado (si existe) */}
         {prod.oldPrice && (

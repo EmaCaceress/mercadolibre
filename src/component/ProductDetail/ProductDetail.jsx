@@ -5,6 +5,7 @@ import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import "./ProductDetail.scss";
 import SliderButtons from "../SliderButton/SliderButton";
+import Star from "../Star/Star";
 
 // =====================
 // UI helpers (componentes puros / presentacionales)
@@ -14,16 +15,7 @@ import SliderButtons from "../SliderButton/SliderButton";
  * - value: numero de 0 a 5
  */
 const StarRow = ({ value = 0 }) => (
-  <div className="ProductDetail-reviews__stars" aria-label={`Puntaje ${value} de 5`}>
-    {Array.from({ length: 5 }).map((_, i) => (
-      <span
-        key={i}
-        className={`ProductDetail-reviews__star ${i < value ? "ProductDetail-reviews__star--on" : ""}`}
-      >
-        ★
-      </span>
-    ))}
-  </div>
+  <Star value={value}/> 
 );
 
 // =====================
