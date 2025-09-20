@@ -3,13 +3,13 @@ import { Link } from "react-router-dom";
 import React, { useEffect, useState } from "react";
 import Star from "../Star/Star";
 
-const Card = ({prod, cardWidth}) => {
+const Card = ({prod, cardWidth, cardHeight}) => {
     console.log(prod)
   return (
     <Link to={`/products/${prod.id}`}
         className="card"
         key={prod.id}
-        style={{ minWidth: `${cardWidth}px` }}
+        style={{ minWidth: `${cardWidth}px`, minHeight: `${cardHeight}px` }}
     >
         {/* Título superior */}
         {prod.titleFirst && (
@@ -47,7 +47,7 @@ const Card = ({prod, cardWidth}) => {
         )}
 
         {
-            cardWidth >= "170" && (
+            cardWidth >= "200" && (
                 <div>
                     <p className="card__name--extra">{prod.brand}</p>
                     <Star value={Math.round(prod.rating)}/> 
@@ -103,6 +103,16 @@ const Card = ({prod, cardWidth}) => {
         prod.button && (
             <div href={prod.buttonLink} className="card__link">
             {prod.button}
+            </div>
+        )
+        }
+
+        {
+        cardWidth >= "200" && prod.promoCuota && (
+            <div className="card__cuotaPromo">
+                <p>Otra opcion de compra</p>
+                <div className="card__price">{prod.price*3}</div>
+                <span className="card__discount">{prod.discount}</span>
             </div>
         )
         }

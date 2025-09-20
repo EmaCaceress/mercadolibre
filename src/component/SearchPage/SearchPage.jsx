@@ -154,7 +154,7 @@ export default function SearchPage() {
               {products.length > 0 && (
                 <div className="spg__grid">
                   {products.map((p) => (
-                    <Card prod={p} cardWidth={"170"}/>
+                    <Card prod={p} cardWidth={"200"} cardHeight={"550"}/>
                   ))}
                 </div>
               )}

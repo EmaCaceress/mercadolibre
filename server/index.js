@@ -226,6 +226,7 @@ app.get("/search", async (req, res) => {
           full: envio == 0 && Math.round(Math.random()) == 0 ? null : 1
         } : null,
         cuotas: cuota % 3 === 0  && !envio && cuota !== 0 ? `Cuota promocionada en ${cuota} cuotas de $${Math.round(priceConv.value/cuota)}` : null,
+        promoCuota: 100000,
         currency: "ARS",
         rating: p.rating,
         rewiews:p.reviews,
@@ -235,7 +236,8 @@ app.get("/search", async (req, res) => {
         images: p.images, 
       };
     });
-    console.log(items);
+  
+    console.log(items.promoCuota);
 
     // Respuesta
     res.json({ total: data.total, limit: data.limit, skip: data.skip, items });
