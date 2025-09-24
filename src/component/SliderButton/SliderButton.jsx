@@ -14,7 +14,7 @@ import Card from "../Card/Card";
  * - cardw: Ancho de cada tarjeta (en px)
  * - cardg: Separación entre tarjetas (en px)
  */
-const SliderButtons = ({ slider, title, cardw, cardg }) => {
+const SliderButtons = ({ slider, title, cardw, cardg, cardH }) => {
   // Estado para guardar el desplazamiento en píxeles del carrusel
   const [desplaceCards, setDesplaceCards] = useState(0);
 
@@ -94,10 +94,24 @@ const SliderButtons = ({ slider, title, cardw, cardg }) => {
             transition: "transform 0.3s ease-in-out",
             display: "flex",
             gap: `${cardGap}px`,
+             height:`${cardH}px` 
           }}
         >
-          {slider.map((prod) => (
-            <Card prod={prod} cardWidth={cardWidth}/>
+          {slider.map((prod, idx) => (
+            typeof prod === "object" && prod !== null ? (
+              <Card
+                key={prod.id ?? idx}
+                prod={prod}
+                cardWidth={cardWidth}
+              />
+            ) : (
+              <img
+                key={idx}
+                src={`https://logo.clearbit.com/${prod}.com`}
+                alt="slide"
+                style={{ width: `${cardWidth}px`, height: "auto", borderRadius: "100%" }}
+              />
+            )
           ))}
         </div>
       </div>

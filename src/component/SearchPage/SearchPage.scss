@@ -1,108 +1,180 @@
-@import '../../assets/styles/variables';
+@import '../../styles/variables';
 
 .SearchPageGrid {
-    background: $color-background-light;
-    padding: 1rem 0;
-    .spg__container { max-width: 1200px; margin: 0 auto; padding: 0 1rem; }
-    .spg__header {
-      display: flex; justify-content: space-between; align-items: baseline;
-      margin-bottom: .75rem;
-      flex-direction: column;
-    }
-    .spg__title { font-size: 1.15rem; }
-    .spg__count { color: #6b7280; font-weight: 500; }
-  
-    .spg__loading, .spg__empty { padding: 2rem 0; text-align: center; color: #6b7280; }
-  
-    /* Layout con sidebar */
-    .spg__content {
+  padding: 1rem 0;
+  background: $color-surface-subtle;
+  display: flex;
+  justify-content: center;
+  // spg__*
+  .spg {
+    &__container {
       display: grid;
-      grid-template-columns: 280px 1fr;
-      align-items: start;
-      gap: 1rem;
+      grid-template-rows: 300px auto;
+      grid-template-columns: 250px 1000px;
+      row-gap: 20px;
+      column-gap: 20px;
     }
 
-    /* Chips de filtros rápidos */
-    .filters__chips { display: flex; flex-wrap: wrap; gap: .5rem; margin-bottom: .75rem; }
-    .chip { background: #f3f4f6; border: 1px solid #e5e7eb; color: #374151; border-radius: .5rem; padding: .25rem .5rem; font-size: .85rem; }
-
-    /* Tarjetas de filtro con switch */
-    .filters__list { display: grid; gap: .6rem; }
-    .filterItem {
-      background: #fff;
-      border: 1px solid #e5e7eb;
-      border-radius: .6rem;
-      padding: .75rem .75rem;
-      display: flex; align-items: center; justify-content: space-between;
+    &__header {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      flex-direction: column;
+      margin-bottom: .75rem;
+      grid-column: 1/2;
+      grid-row: 1/2;
     }
-    .filterItem__text { line-height: 1.1; }
-    .filterItem__title { color: #111827; font-weight: 600; }
-    .filterItem__desc { display: block; color: #6b7280; margin-top: .2rem; font-size: .85rem; }
-    .tagFull { color: #10b981; font-weight: 800; letter-spacing: .3px; }
-    .tagIntl { color: #2563eb; font-weight: 800; }
 
-    /* Switch simple */
-    .switch { width: 42px; height: 24px; background: #e5e7eb; border: none; border-radius: 9999px; position: relative; cursor: pointer; transition: background .2s ease; }
-    .switch__knob { position: absolute; top: 3px; left: 3px; width: 18px; height: 18px; background: #fff; border-radius: 9999px; box-shadow: 0 1px 2px rgba(0,0,0,.15); transition: transform .2s ease; }
-    .switch.is-on { background: #10b981; }
-    .switch.is-on .switch__knob { transform: translateX(18px); }
+    &__title { font-size: 1.15rem; }
+    &__count { color: $color-neutral-500; font-weight: 500; }
 
-    /* Grilla 3 columnas (desktop), 2 en tablets, 1 en mobile */
-    .spg__grid {
+    &__loading,
+    &__empty {
+      padding: 2rem 0;
+      text-align: center;
+      color: $color-neutral-500;
+    }
+
+    &__grid {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
       gap: .9rem;
     }
-  
-    .card {
-      background: #fff;
-      border: 1px solid #e5e7eb;
-      border-radius: .75rem;
-      padding: .75rem;
-      display: grid;
-      grid-template-rows: 200px auto;
-      transition: box-shadow .15s ease;
-    }
-    .card:hover { box-shadow: 0 6px 18px rgba(0,0,0,.06); }
-  
-    .card__imgWrap {
-      display: grid; place-items: center;
-      img { max-height: 180px; object-fit: contain; width: 100%; }
-    }
-  
-    .card__body { display: grid; gap: .35rem; }
-    .card__title {
-      display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical;
-      overflow: hidden; text-decoration: none; color: #111827; font-weight: 500;
-    }
-  
-    .card__priceRow { display: flex; align-items: baseline; gap: .5rem; }
-    .card__price { font-size: 1.15rem; font-weight: 800; }
-    .card__off { color: #059669; font-weight: 700; font-size: .9rem; }
-  
-    .card__installments { font-size: .92rem; color: #374151; }
-    .card__meta { display: flex; gap: .5rem; align-items: center; }
-    .card__stars { font-size: .95rem; color: #111827; }
-    .card__ship { color: #059669; font-weight: 600; font-size: .9rem; }
-  
-    .spg__pagination {
+
+    &__pagination {
       margin-top: 1rem;
+
       a {
-        display: inline-block; padding: .4rem .65rem; margin-right: .25rem;
-        border: 1px solid #e5e7eb; border-radius: .5rem; text-decoration: none; color: #111827;
+        display: inline-block;
+        padding: .4rem .65rem;
+        margin-right: .25rem;
+        color: $color-text-primary;
+        text-decoration: none;
+        border: 1px solid $color-border-default;
+        border-radius: $radius-8;
       }
-      .is-current { border-color: #3b82f6; color: #3b82f6; }
-    }
-  
-    /* Responsivo */
-    @media (max-width: 1024px) {
-      .spg__content { grid-template-columns: 240px 1fr; }
-      .spg__grid { grid-template-columns: repeat(2, 1fr); }
-    }
-    @media (max-width: 640px) {
-      .spg__content { grid-template-columns: 1fr; }
-      .spg__filters { order: -1; }
-      .spg__grid { grid-template-columns: 1fr; }
+
+      .is-current {
+        color: $color-info-500;
+        border-color: $color-info-500;
+      }
     }
   }
-  
+  &__filters {
+    grid-column: 1/2;
+    grid-row: 2/3;
+  }
+  // filtros & chips
+  .filters {
+
+    &__chips {
+      display: flex;
+      flex-wrap: wrap;
+      gap: .5rem;
+      margin-bottom: .75rem;
+    }
+
+    &__list {
+      display: grid;
+      gap: .6rem;
+    }
+  }
+
+  .chip {
+    padding: .25rem .5rem;
+    font-size: .85rem;
+    color: $color-chip-text;
+    background: $color-chip-bg;
+    border: 1px solid $color-chip-border;
+    border-radius: $radius-8;
+  }
+
+  .filterItem {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: .5rem;
+    padding: .75rem;
+    background: $color-surface;
+    border: 1px solid $color-border-default;
+    border-radius: .6rem;
+
+    &__text { line-height: 1.1; }
+    &__title { color: $color-text-primary; font-weight: 600; }
+    &__desc  { display: block; margin-top: .2rem; font-size: .85rem; color: $color-neutral-500; }
+  }
+
+  .tagFull { color: $color-success-400; font-weight: 800; letter-spacing: .3px; }
+  .tagIntl { color: $color-info-600; font-weight: 800; }
+
+  .switch {
+    position: relative;
+    width: 42px; height: 24px;
+    border: none; border-radius: 9999px;
+    background: $color-neutral-200;
+    transition: background .2s ease;
+    cursor: pointer;
+
+    &__knob {
+      position: absolute; top: 3px; left: 3px;
+      width: 18px; height: 18px;
+      border-radius: 9999px; background: $color-surface;
+      box-shadow: $shadow-xs;
+      transition: transform .2s ease;
+    }
+
+    &.is-on {
+      background: $color-success-400;
+
+      .switch__knob { transform: translateX(18px); }
+    }
+  }
+  .__main{
+    grid-column: 2/3;
+    grid-row: 2/3;
+  }
+  .__slider{
+    grid-column: 2/3;
+    grid-row: 1/2;
+  }
+  .card {
+    display: grid;
+    grid-template-rows: 200px auto;
+    padding: $space-md;
+    background: $color-surface;
+    border: 1px solid $color-card-border;
+    border-radius: $radius-12;
+    transition: box-shadow .15s ease;
+
+    &:hover { box-shadow: $color-card-hover-shadow; }
+
+    &__imgWrap {
+      display: grid; place-items: center;
+
+      img { width: 100%; max-height: 180px; object-fit: contain; }
+    }
+
+    &__body  { display: grid; gap: .35rem; }
+    &__title {
+      color: $color-text-primary; font-weight: 500; text-decoration: none;
+      display: -webkit-box; overflow: hidden; -webkit-line-clamp: 2; -webkit-box-orient: vertical;
+    }
+    &__priceRow { display: flex; align-items: baseline; gap: .5rem; }
+    &__off { color: $color-success-600; font-weight: 700; font-size: .9rem; }
+    &__installments { font-size: .92rem; color: $color-neutral-700; }
+    &__meta { display: flex; align-items: center; gap: .5rem; }
+    &__stars { font-size: .95rem; color: $color-text-primary; }
+    &__ship { font-size: .9rem; font-weight: 600; color: $color-success-600; }
+  }
+
+  /* Responsivo */
+  @media (max-width: 1024px) {
+    .spg__content { grid-template-columns: 240px 1fr; }
+    .spg__grid    { grid-template-columns: repeat(2, 1fr); }
+  }
+  @media (max-width: 640px) {
+    .spg__content { grid-template-columns: 1fr; }
+    .spg__filters { order: -1; }
+    .spg__grid    { grid-template-columns: 1fr; }
+  }
+}

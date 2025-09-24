@@ -2,6 +2,7 @@ import { useEffect, useMemo, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import "./SearchPage.scss";
 import Card from "../Card/Card";
+import SliderButtons from "../SliderButton/SliderButton";
 
 function useQuery() {
   const { search } = useLocation();
@@ -29,6 +30,8 @@ export default function SearchPage() {
     freeShipping: false,
     bestInstallments: false,
   });
+  const [brands, setBrands] = useState([]);
+
   useEffect(() => {
     fetch(`${API_BASE}/search?q=${encodeURIComponent(q)}&limit=${limit}&skip=${skip}`)
       .then(res => res.json())
@@ -40,22 +43,29 @@ export default function SearchPage() {
 
   }, [q, page]);
 
+  useEffect(() => {
+    if (products.length > 0) {
+      const uniqueBrands = [...new Set(products.map(p => p.brand))];
+      setBrands(uniqueBrands);
+    }
+  }, [products]);
+
   useEffect(() => {setTotal(products.length)}, [products]);
   return (
     <div className="SearchPageGrid">
-      <section className="spg__container">
-        <header className="spg__header">
-          <h1 className="spg__title">
-            {loading ? "Buscando..." : ` ${q}`}
-
-          </h1>
-          {!loading && <small className="spg__count"> {total} resultados</small>}
-        </header>
-
-        {loading && <div className="spg__loading">Cargando…</div>}
-
-        {!loading && (
-          <div className="spg__content">
+        {!loading ? (
+          <div className="spg__container">
+            {/* TITULO */}
+            <header className="spg__header">
+              <h1 className="spg__title">
+                {loading ? "Buscando..." : ` ${q}`}
+              </h1>
+              {!loading && <small className="spg__count"> {total} resultados</small>}
+            </header>
+            {/* Slider de marcas */}
+            <div className="spg__slider">
+              <SliderButtons slider={brands} cardw={"180"} cardg={"20"} cardH={"80"}/>
+            </div>
             {/* Lateral de filtros */}
             <aside className="spg__filters" aria-label="Filtros de búsqueda">
 
@@ -179,8 +189,10 @@ export default function SearchPage() {
               )}
             </div>
           </div>
+        )
+        : (
+          <div className="spg__loading">Cargando...</div>
         )}
-      </section>
     </div>
   );
 }

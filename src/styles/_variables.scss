@@ -1,0 +1,144 @@
+// src/styles/_variables.scss
+// Sistema de tokens centralizado.
+// Mapa de deprecación (viejo → nuevo):
+// $color-primary → $color-brand-primary-500
+// $color-green → $color-success-500
+// $color-white → $color-neutral-50
+// $color-border → $color-border-300
+// $color-text → $color-neutral-800
+// $color-text-grey → $color-neutral-600
+// $color-search → $color-neutral-400
+// $color-header-purple1 → $color-brand-secondary-500
+// $color-header-purple2 → $color-brand-secondary-600
+// $color-overlay-dark → $color-overlay-700
+// $color-overlay-light → $color-overlay-0
+// $color-background-light → $color-surface-subtle
+// $color-background-light-purple → $color-surface-accent-50
+// $shadow-sm → $shadow-sm
+// $shadow-md → $shadow-md
+// $shadow-lg → $shadow-lg
+// $padding-xs → $space-xs
+// $padding-sm → $space-sm
+// $padding-md → $space-md
+// $padding-lg → $space-lg
+// $padding-xl → $space-xl
+// $margin-sm → $space-2-5
+// $margin-md → $space-4
+// $margin-lg → $space-xl
+// $radius-xs → $radius-2
+// $radius-sm → $radius-4
+// $radius-md → $radius-6
+// $radius-lg → $radius-8
+// $radius-xl → $radius-12
+// $radius-xxl → $radius-18
+// $max-width-container → $container-max-width
+// $input-font-size → $font-size-input
+// $text-font-size → $font-size-2xs
+// $text-font-size-xs → $font-size-xs
+// $text-font-size-sm → $font-size-sm
+// $text-font-size-md → $font-size-md
+// $text-font-size-lg → $font-size-lg
+// $text-font-size-xl → $font-size-xl
+// $text-font-size-xxl → $font-size-2xl
+// $icon-font-size-md → $icon-size-md
+// $icon-font-size-lg → $icon-size-lg
+// $text-font-family → $font-family-sans
+// Paleta base
+$color-brand-primary-500: #ffe600;
+$color-brand-secondary-500: #AA1192;
+$color-brand-secondary-600: #5A238D;
+// Estado
+$color-success-400: #10b981;
+// usado en SearchPage
+$color-success-500: #00A650;
+// verde ML
+$color-success-600: #059669;
+$color-danger-500: #cc1414;
+// badge notificación
+// Info / enlaces
+$color-info-500: #3b82f6;
+$color-info-600: #2563eb;
+$color-warning-500: #f5a623;
+$color-link-500: #1a73e8;
+$color-link-600: #0b5ed7;
+$color-link-bg-100: #d6e4ff;
+$color-link-bg-200: #b3ccff;
+// Acentos adicionales
+$color-accent-500: #c558f3;
+$color-accent-600: #6c00b9;
+// Neutros
+$color-neutral-50: #ffffff;
+$color-neutral-100: #f3f4f6;
+$color-neutral-200: #e5e7eb;
+$color-neutral-300: #dddddd;
+$color-neutral-400: #b3b0b0;
+$color-neutral-500: #999999;
+$color-neutral-600: #5f5f5f;
+$color-neutral-700: #374151;
+$color-neutral-800: #333333;
+$color-neutral-900: #111827;
+$color-neutral-950: #111111;
+// Superficies / bordes / overlay
+$color-surface: $color-neutral-50;
+$color-surface-subtle: #eeeeee;
+$color-surface-accent-50: #f6f1fd;
+$color-border-200: $color-neutral-200;
+$color-border-250: #e6e6e6;
+$color-border-300: #cccccc;
+$color-border-default: $color-border-200;
+$color-divider: $color-border-default;
+$color-overlay-700: rgba(0, 0, 0, 0.7);
+$color-overlay-0: rgba(0, 0, 0, 0);
+$color-focus-ring: #5f9ea0;
+// cadetblue
+// Tipografía
+$font-family-sans: 'Roboto', sans-serif;
+$font-size-2xs: 11px;
+$font-size-xs: 12px;
+$font-size-sm: 14px;
+$font-size-md: 18px;
+$font-size-lg: 22px;
+$font-size-xl: 26px;
+$font-size-2xl: 30px;
+$font-size-input: 14px;
+// Iconos
+$icon-size-md: 21px;
+$icon-size-lg: 26px;
+// Medidas y layout
+$container-max-width: 1180px;
+// Espaciado (escala)
+$space-xxs: 2px;
+$space-xs: 4px;
+$space-sm: 8px;
+$space-md: 12px;
+$space-lg: 14px;
+$space-xl: 20px;
+$space-2-5: 10px;
+// 2.5 * 4px
+$space-4: 16px;
+// 4 * 4px
+// Radios
+$radius-2: 2px;
+$radius-4: 4px;
+$radius-6: 6px;
+$radius-8: 8px;
+$radius-12: 12px;
+$radius-18: 18px;
+// Sombras
+$shadow-xs: 0 1px 2px rgba(0, 0, 0, 0.15);
+$shadow-hairline: 0 1px rgba(0, 0, 0, 0.1);
+$shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.1);
+$shadow-md: 0 1px 4px rgba(0, 0, 0, 0.4);
+$shadow-lg: 0 2px 6px rgba(0, 0, 0, 0.1);
+$shadow-hover-card: 0 6px 18px rgba(0, 0, 0, 0.06);
+// Tokens semánticos derivados (texto)
+$color-text-primary: $color-neutral-900;
+$color-text-secondary: $color-neutral-700;
+$color-text-muted: $color-neutral-500;
+$color-text-inverse: $color-neutral-50;
+// Tokens semánticos derivados (componentes)
+$color-chip-bg: $color-neutral-100;
+$color-chip-border: $color-neutral-200;
+$color-chip-text: $color-neutral-700;
+$color-card-border: $color-neutral-200;
+$color-card-hover-shadow: $shadow-hover-card;

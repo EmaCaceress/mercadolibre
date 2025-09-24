@@ -1,46 +1,41 @@
-@import '../../assets/styles/variables';
-
+@import '../../styles/variables';
 .SearchBar{
-    display: flex;
+  display: flex;
+  flex: 1;
+  margin: 0 $space-xl;
+  max-width: 600px;
+  box-shadow: $shadow-hairline;
+  input {
     flex: 1;
-    margin: 0 $margin-lg;
-    max-width: 600px;
-    box-shadow: 0px 1px rgba(0, 0, 0, 0.1);
-        input {
-        flex: 1;
-        padding: 5px 15px;
-        border: none;
-        border-right: none; 
-        border-radius: $radius-sm 0 0 $radius-sm;
-        font-size: $input-font-size;
-        
-        &:focus{
-        outline: none;
-        }
+    border-right: none;
+    border-radius: $radius-4 0 0 $radius-4;
+    font-size: $font-size-input;
+    border: none;
+    padding: 5px 15px;
+    &:focus{
+      outline: none;
     }
-
-    &__divider{
-        border-left: 1px solid $color-search;
-        height: 18px;
-        width: 1%;
-        position: absolute;
-        left: 0;
-        top:26%
-    }
-    button {
-        padding: 0 $padding-lg;
-        background-color: $color-white;
-        border: none;
-        border-left: none;
-        border-radius: 0 $radius-sm $radius-sm 0;
-        color: $color-search;
-        position: relative;
-        cursor: pointer;
-    }
-
-    &:focus-within {
-        border: 0.5px solid cadetblue;
-        border-radius: $radius-sm;
-    }
+  }
+  &__divider{
+    border-left: 1px solid $color-neutral-400;
+    height: 18px;
+    width: 1%;
+    left: 0;
+    position: absolute;
+    top:26%
+  }
+  button {
+    position: relative;
+    padding: 0 $space-lg;
+    border: none;
+    border-left: none;
+    background-color: $color-surface;
+    cursor: pointer;
+    color: $color-neutral-400;
+    border-radius: 0 $radius-4 $radius-4 0;
+  }
+  &:focus-within {
+    border: 0.5px solid $color-focus-ring;
+    border-radius: $radius-4;
+  }
 }
-

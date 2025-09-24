@@ -1,2 +1,11 @@
-.stars { line-height: 1; }
-.star { color: #ddd; font-size: 18px; &--on { color: #f5a623; } }
+@import '../../styles/variables';
+.stars {
+  line-height: 1;
+}
+.star {
+  color: $color-neutral-300;
+  font-size: 18px;
+  &--on {
+    color: $color-warning-500;
+  }
+}

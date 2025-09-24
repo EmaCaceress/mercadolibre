@@ -4,12 +4,11 @@ import React, { useEffect, useState } from "react";
 import Star from "../Star/Star";
 
 const Card = ({prod, cardWidth, cardHeight}) => {
-    console.log(prod)
   return (
     <Link to={`/products/${prod.id}`}
         className="card"
         key={prod.id}
-        style={{ minWidth: `${cardWidth}px`, minHeight: `${cardHeight}px` }}
+        style={{ minWidth: `${cardWidth}px`, minHeight: `${cardHeight}px`, gridTemplateRows: cardHeight > 300 ? "270px auto" : "200 auto" }}
     >
         {/* Título superior */}
         {prod.titleFirst && (
@@ -47,7 +46,7 @@ const Card = ({prod, cardWidth, cardHeight}) => {
         )}
 
         {
-            cardWidth >= "200" && (
+            Number(cardWidth) >= 200 && (
                 <div>
                     <p className="card__name--extra">{prod.brand}</p>
                     <Star value={Math.round(prod.rating)}/> 
@@ -107,17 +106,35 @@ const Card = ({prod, cardWidth, cardHeight}) => {
         )
         }
 
-        {
-        cardWidth >= "200" && prod.promoCuota && (
-            <div className="card__cuotaPromo">
-                <p>Otra opcion de compra</p>
-                <div className="card__price">{prod.price*3}</div>
-                <span className="card__discount">{prod.discount}</span>
+        {/* OTRA OPCIÓN DE COMPRA */}
+            {Number(cardWidth) >= 200 && prod.promoCuota && (
+            <div className="card__alt-offer">
+                <p className="card__alt-title">Otra opción de compra</p>
+
+                {prod.oldPrice && (
+                <p className="card__alt-old">
+                    ${prod.oldPrice.toLocaleString("es-AR")}
+                </p>
+                )}
+
+                <div className="card__alt-row">
+                <span className="card__alt-price">
+                    ${prod.price.toLocaleString("es-AR")}
+                </span>
+                {prod.discount && (
+                    <span className="card__alt-off">{prod.discount}</span>
+                )}
+                </div>
+
+                <p className="card__alt-cuotas">
+                Mismo precio 3 cuotas de $
+                {Math.round(prod.price / 3).toLocaleString("es-AR")}
+                </p>
             </div>
-        )
-        }
+            )}
+
     </Link>
-  )
+  ) 
 }
 
 export default Card;

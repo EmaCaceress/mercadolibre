@@ -1,44 +1,43 @@
-@import '../../assets/styles/variables';
-
+@import '../../styles/variables';
 .slider-button {
   position: absolute;
   top: 50%;
-  transform: translateY(-50%);
   width: 70px;
   height: 70px;
-  background: #fff;
   border: none;
   border-radius: 50%;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1); // sombra suave
+  transform: translateY(-50%);
+  background: $color-surface;
+  box-shadow: $shadow-lg;
+  // sombra suave
+  z-index: 10;
   display: flex;
   align-items: center;
   justify-content: center;
-  cursor: pointer;
-  z-index: 10;
   transition: background 0.2s ease;
-
+  cursor: pointer;
   svg {
     width: 45px;
     height: 45px;
-    stroke: #3483fa;
+    stroke: $color-info-500;
     stroke-width: 1;
   }
-
+  // hover state
   &:hover {
-    background: #f0f0f0;
+    background: $color-neutral-100;
   }
-
   &--left {
-    left: -40px; // fuera del contenedor (ajustá si querés que se superponga)
+    left: -40px;
+    // fuera del contenedor (ajustá si querés que se superponga)
   }
-
   &--right {
-    right: -40px; // fuera del contenedor (ajustá si querés que se superponga)
+    right: -40px;
+    // fuera del contenedor (ajustá si querés que se superponga)
   }
   &__title {
     margin-bottom: 1rem;
-    font-size: $text-font-size-lg;
-    font-family: $text-font-family;
+    font-size: $font-size-lg;
+    font-family: $font-family-sans;
   }
   &__containerList{
     width: 100%;
@@ -49,6 +48,7 @@
     gap: 20px;
     height: 300px;
     transition: all 0.5s ease;
+    // hover state
     &:hover{
       transform: translateX(-100%);
     }
