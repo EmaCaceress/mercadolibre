@@ -7,32 +7,38 @@
   justify-content: center;
   // spg__*
   .spg {
+    &__filters {
+      grid-column: 1/2;
+      grid-row: 1/3;
+    }
     &__container {
       display: grid;
-      grid-template-rows: 300px auto;
-      grid-template-columns: 250px 1000px;
+      grid-template-rows: 80px auto;
+      grid-template-columns: 250px 900px;
       row-gap: 20px;
-      column-gap: 20px;
+      column-gap: 50px;
     }
 
     &__header {
       display: flex;
-      align-items: baseline;
-      justify-content: space-between;
       flex-direction: column;
-      margin-bottom: .75rem;
-      grid-column: 1/2;
-      grid-row: 1/2;
+      align-items: baseline;
+      justify-content: space-evenly;
+      margin-bottom: 20px;
     }
 
-    &__title { font-size: 1.15rem; }
-    &__count { color: $color-neutral-500; font-weight: 500; }
+    &__title { font-size: $font-size-lg; }
+    &__count { color: $color-neutral-950; font-weight: 500; }
 
     &__loading,
     &__empty {
       padding: 2rem 0;
       text-align: center;
       color: $color-neutral-500;
+    } 
+
+    &__slider{
+      position: relative;
     }
 
     &__grid {
@@ -60,10 +66,7 @@
       }
     }
   }
-  &__filters {
-    grid-column: 1/2;
-    grid-row: 2/3;
-  }
+
   // filtros & chips
   .filters {
 
@@ -96,12 +99,13 @@
     gap: .5rem;
     padding: .75rem;
     background: $color-surface;
-    border: 1px solid $color-border-default;
-    border-radius: .6rem;
+    border: 1px solid #ddd;
+    border-radius: 6px;
 
+    font-size: $font-size-sm;
     &__text { line-height: 1.1; }
     &__title { color: $color-text-primary; font-weight: 600; }
-    &__desc  { display: block; margin-top: .2rem; font-size: .85rem; color: $color-neutral-500; }
+    &__desc  { display: block; margin-top: .2rem; color: $color-neutral-500; width: 174px; }
   }
 
   .tagFull { color: $color-success-400; font-weight: 800; letter-spacing: .3px; }
@@ -136,6 +140,8 @@
   .__slider{
     grid-column: 2/3;
     grid-row: 1/2;
+    display: flex;
+    justify-content: center;
   }
   .card {
     display: grid;

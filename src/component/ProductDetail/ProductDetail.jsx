@@ -130,10 +130,10 @@ const ProductDetail = () => {
         { 5: 0, 4: 0, 3: 0, 2: 0, 1: 0 } // inicialización
       );
       
-      console.log(counts);
+
       setCounts(counts);
       const totalList = Object.values(counts).reduce((a, b) => a + b, 0);
-      console.log(totalList)
+
       setTotal(totalList)
       setAvg(Math.round(avgStars)+".0")
     },[productId])

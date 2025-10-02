@@ -44,30 +44,36 @@ export default function SearchPage() {
   }, [q, page]);
 
   useEffect(() => {
-    if (products.length > 0) {
-      const uniqueBrands = [...new Set(products.map(p => p.brand))];
-      setBrands(uniqueBrands);
-    }
-  }, [products]);
-
+    setBrands([]);
+    const uniqueBrands = [
+      ...new Set(
+        products
+          .map(p => p.brand)                     // solo el valor
+          .filter(b => b != null && b !== "")    // saca null/undefined/""
+      )
+    ];
+    setBrands(uniqueBrands);
+  }, [products, q]);
+  useEffect(() => {console.log(q)}, [q]);
   useEffect(() => {setTotal(products.length)}, [products]);
   return (
     <div className="SearchPageGrid">
         {!loading ? (
           <div className="spg__container">
-            {/* TITULO */}
-            <header className="spg__header">
-              <h1 className="spg__title">
-                {loading ? "Buscando..." : ` ${q}`}
-              </h1>
-              {!loading && <small className="spg__count"> {total} resultados</small>}
-            </header>
             {/* Slider de marcas */}
             <div className="spg__slider">
-              <SliderButtons slider={brands} cardw={"180"} cardg={"20"} cardH={"80"}/>
+              <SliderButtons slider={brands} cardw={80} cardg={22.5} cardH={80}/>
             </div>
             {/* Lateral de filtros */}
             <aside className="spg__filters" aria-label="Filtros de búsqueda">
+              
+              {/* TITULO */}
+              <header className="spg__header">
+                <h1 className="spg__title">
+                  {loading ? "Buscando..." : ` ${q}`}
+                </h1>
+                {!loading && <small className="spg__count"> {total} resultados</small>}
+              </header>
 
               <div className="filters__list">
                 <div className="filterItem">

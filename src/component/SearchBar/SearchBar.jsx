@@ -11,7 +11,7 @@ export default function SearchBar() {
   const onSubmit = (e) => {
     e.preventDefault();
     const query = q.trim();
-    console.log("Buscando:", query);
+
     if (!query) return;
     navigate(`/search?q=${encodeURIComponent(query)}`);
     // fetch(`http://localhost:4000/search?q=${encodeURIComponent(query)}`)
