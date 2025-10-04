@@ -104,6 +104,7 @@ const SliderButtons = ({ slider, title, cardw, cardg, cardH }) => {
     setCurrentPage(0);
     setDesplaceCards(0);
   }, [slider]);
+  
   return (
     <>
       {currentPage > 0 && (

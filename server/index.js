@@ -1,6 +1,6 @@
-// index.js — versión completa con fixes (dotenv, traducción robusta, cache y secuencial)
+// index.js — versión optimizada (helpers unificados + buildItem reutilizable)
 // Ejecuta: node index.js
-// Requisitos: Node 18+ (tiene fetch global). Si usás Node 16/14, instalá node-fetch y descomentá abajo.
+// Requisitos: Node 18+ (tiene fetch global)
 
 const dotenv = require("dotenv");
 const express = require("express");
@@ -8,9 +8,6 @@ const axios = require("axios");
 const cors = require("cors");
 
 dotenv.config();
-
-// Si tu Node es < 18, descomenta esto y ejecutá: npm i node-fetch
-// const fetch = (...args) => import('node-fetch').then(({ default: f }) => f(...args));
 
 const app = express();
 app.use(cors());
@@ -23,6 +20,7 @@ const PORT = process.env.PORT || 3000;
 const BASE = "https://dummyjson.com";
 const DEFAULT_USD_ARS = Number(process.env.USD_ARS || 1300);
 
+// Si en algún momento querés usar LibreTranslate (ya tenés las envs)
 const LT_URL = process.env.LIBRETRANSLATE_URL || "https://libretranslate.de/translate";
 const LT_TIMEOUT_MS = Number(process.env.LT_TIMEOUT_MS || 8000);
 
@@ -30,13 +28,12 @@ const LT_TIMEOUT_MS = Number(process.env.LT_TIMEOUT_MS || 8000);
 const tCache = new Map();
 
 // ---------------------------------------------------
-// Helpers de precio
+// Helpers generales
 // ---------------------------------------------------
-
 function convertPriceUSD(priceUSD, _currency, rate) {
-  // Hoy forzamos salida en ARS, multiplicando por la tasa
+  // Por ahora forzamos salida en ARS usando la tasa
   const value = priceUSD * rate;
-  return {value, currency: "ARS" };
+  return { value, currency: "ARS" };
 }
 
 function formatCurrency(value, currency) {
@@ -51,19 +48,16 @@ function formatCurrency(value, currency) {
   }
 }
 
-// ---------------------------------------------------
-// Envio random
-// ---------------------------------------------------
-const envioOptions = [
-  "Envio gratis",
-  "Llega gratis mañana",
-  "Llega gratis hoy"
-];
-
-function getRandomEnvio() {
-  const randomIndex = Math.floor(Math.random() * envioOptions.length);
-  return envioOptions[randomIndex];
+// Envío random (texto)
+const envioOptions = ["Envio gratis", "Llega gratis mañana", "Llega gratis hoy"];
+function getRandomEnvioText() {
+  const i = Math.floor(Math.random() * envioOptions.length);
+  return envioOptions[i];
 }
+
+// Normalizador para comparar sin acentos/mayúsculas
+const norm = (s = "") =>
+  String(s).toLowerCase().normalize("NFD").replace(/\p{Diacritic}/gu, "").trim();
 
 // ---------------------------------------------------
 // Mapa de categorías
@@ -90,38 +84,76 @@ const categoryMap = {
   lighting: "iluminación",
 };
 
-function itemsReturn (data, currency, rate) {
+// ---------------------------------------------------
+// 🔧 Build Item (UNIFICADO)
+// ---------------------------------------------------
+// Recibe un product de dummyjson y devuelve tu estructura final
+function buildItem(p, { currency, rate }) {
+  const priceConv = convertPriceUSD(p.price, currency, rate);
 
-  const items = data.map(p => {
-    const priceConv = convertPriceUSD(p.price, currency, rate);
-    const cuota = Math.round(Math.random() * 12) ;
-    const envio = Math.round(Math.random());
-    const descuento = Math.round(Math.random());
-    return {
-      id: p.id,
-      titleSecond: p.title,
-      description: p.description,
-      oldPrice: descuento == 0 ? (Math.round(((priceConv.value * p.discountPercentage)/100) + priceConv.value)) : null, 
-      price: Math.round(priceConv.value),
-      discount: descuento == 0 && p.discountPercentage ? `${Math.round(p.discountPercentage)}% OFF` : null,
-      image: p.thumbnail,
-      envio: envio == 1 ? {
-        time: getRandomEnvio(), 
-        full: envio == 0 && Math.round(Math.random()) == 0 ? null : 1
-      } : null,
-      cuotas: cuota % 3 === 0  && !envio && cuota !== 0 ? `Cuota promocionada en ${cuota} cuotas de $${Math.round(priceConv.value/cuota)}` : null,
-      promoCuota: 100000,
-      currency: "ARS",
-      rating: p.rating,
-      rewiews:p.reviews,
-      stock: p.stock, 
-      brand: p.brand, 
-      category: categoryMap[p.category] || p.category,
-      images: p.images, 
-    };
-  });
-  return items;
+  // randoms coherentes
+  const cuotasNum = Math.round(Math.random() * 12); // 0..12
+  const envioOn = Math.round(Math.random()) === 1;  // true/false
+  const hayDescuento = Math.round(Math.random()) === 0; // 50/50
+
+  // Envío (si envioOn true, definimos objeto; si no, null)
+  const envio =
+    envioOn
+      ? {
+          time: getRandomEnvioText(),
+          // Antes esta lógica siempre terminaba en 1; ahora sí puede ser 1 o null
+          full: Math.round(Math.random()) === 1 ? 1 : null,
+        }
+      : null;
+
+  // Cuotas: mismas condiciones que tenías (divisible por 3, sin envío y > 0)
+  const cuotas =
+    cuotasNum % 3 === 0 && !envioOn && cuotasNum !== 0
+      ? `Cuota promocionada en ${cuotasNum} cuotas de $${Math.round(
+          priceConv.value / cuotasNum
+        )}`
+      : null;
+
+  // Descuento: si “hayDescuento”, calculamos oldPrice y string de descuento
+  const oldPrice = hayDescuento
+    ? Math.round((priceConv.value * p.discountPercentage) / 100 - priceConv.value)
+    : null;
+
+  const discount =
+    hayDescuento && p.discountPercentage
+      ? `${Math.round(p.discountPercentage)}% OFF`
+      : null;
+  
+  const promoCuota = hayDescuento
+  ? priceConv.value / 3
+  : null;
+
+  return {
+    id: p.id,
+    titleSecond: p.title,
+    description: p.description,
+    oldPrice,
+    price: Math.round(priceConv.value),
+    discount,
+    image: p.thumbnail,
+    envio,
+    cuotas,
+    promoCuota: promoCuota,
+    currency: "ARS",
+    rating: p.rating,
+    rewiews: p.reviews, // (mantengo tu key 'rewiews')
+    stock: p.stock,
+    brand: p.brand,
+    category: categoryMap[p.category] || p.category,
+    images: p.images,
+  };
 }
+
+// Mapea una lista de productos usando el buildItem unificado
+function itemsReturn(products = [], currency, rate) {
+  return products.map((p) => buildItem(p, { currency, rate }));
+}
+
 // ---------------------------------------------------
 // Rutas
 // ---------------------------------------------------
@@ -138,6 +170,7 @@ app.get("/", (_req, res) => {
   `);
 });
 
+// Listado
 app.get("/products", async (req, res) => {
   const limit = Number(req.query.limit ?? 200);
   const skip = Number(req.query.skip ?? 0);
@@ -147,36 +180,8 @@ app.get("/products", async (req, res) => {
   try {
     const { data } = await axios.get(`${BASE}/products`, { params: { limit, skip } });
 
-    // Secuencial + cache de traducción para evitar rate limit y el error de HTML
-    const items = [];
-    for (const p of data.products) {
-      const priceConv = convertPriceUSD(p.price, currency, rate);
-      const cuota = Math.round(Math.random() * 12) ;
-      const envio = Math.round(Math.random());
-      const descuento = Math.round(Math.random());
-
-      items.push({
-        id: p.id,
-        titleSecond: p.title, 
-        description: p.description,
-        oldPrice: descuento == 0 ? (Math.round(((priceConv.value * p.discountPercentage)/100) + priceConv.value)) : null, 
-        price: Math.round(priceConv.value),
-        discount: descuento == 0 && p.discountPercentage ? `${Math.round(p.discountPercentage)}% OFF` : null,
-        image: p.thumbnail,
-        envio: envio == 1 ? {
-          time: getRandomEnvio(), 
-          full: envio == 0 && Math.round(Math.random()) == 0 ? null : 1
-        } : null,
-        cuotas: cuota % 3 === 0  && !envio && cuota !== 0 ? `Cuota promocionada en ${cuota} cuotas de $${Math.round(priceConv.value/cuota)}` : null,
-        currency: "ARS",
-        rating: p.rating,
-        rewiews:p.reviews,
-        stock: p.stock, 
-        brand: p.brand, 
-        category: categoryMap[p.category] || p.category,
-        images: p.images, 
-      });
-    }
+    // ✅ ahora usamos el buildItem (vía itemsReturn)
+    const items = itemsReturn(data.products, currency, rate);
 
     res.json({ total: data.total, limit: data.limit, skip: data.skip, items });
   } catch (e) {
@@ -185,37 +190,18 @@ app.get("/products", async (req, res) => {
   }
 });
 
+// Detalle
 app.get("/products/:id", async (req, res) => {
   const currency = (req.query.currency || "").toUpperCase();
   const rate = Number(req.query.rate || DEFAULT_USD_ARS);
 
   try {
     const { data: p } = await axios.get(`${BASE}/products/${req.params.id}`);
-    const priceConv = convertPriceUSD(p.price, currency, rate);
-    const cuota = Math.round(Math.random() * 12) ;
-    const envio = Math.round(Math.random());
 
-    res.json({
-      id: p.id,
-      titleSecond: p.title, 
-      description: p.description,
-      oldPrice: (Math.round(((priceConv.value * p.discountPercentage)/100) + priceConv.value)), 
-      price: Math.round(priceConv.value),
-      discount: Math.round(Math.random()) == 0 && p.discountPercentage ? `${Math.round(p.discountPercentage)}% OFF` : null,
-      image: p.thumbnail,
-      envio: envio ? {
-        time: getRandomEnvio(), 
-        full: envio == 0 && Math.round(Math.random()) == 0 ? null : 1
-      } : null,
-        cuotas: cuota % 3 === 0 && cuota !== 0 ? `Cuota promocionada en ${cuota} cuotas de $${Math.round(priceConv.value/cuota)}` : null,
-      currency: "ARS",
-      rating: p.rating,
-      rewiews:p.reviews,
-      stock: p.stock, 
-      brand: p.brand, 
-      category: categoryMap[p.category] || p.category,
-      images: p.images,
-      });
+    // ✅ reutilizamos la misma forma de construir el item
+    const item = buildItem(p, { currency, rate });
+
+    res.json(item);
   } catch (e) {
     const status = e.response?.status || 500;
     console.error(e?.message || e);
@@ -223,26 +209,17 @@ app.get("/products/:id", async (req, res) => {
   }
 });
 
-// ---------------------------------------------------
-// Search
-// ---------------------------------------------------
-// Normalizador para comparar sin acentos/mayúsculas
-const norm = (s = "") =>
-  String(s)
-    .toLowerCase()
-    .normalize("NFD")
-    .replace(/\p{Diacritic}/gu, "")
-    .trim();
-
-
+// Búsqueda
 app.get("/search", async (req, res) => {
   const q = req.query.q || "";
   const limit = Number(req.query.limit ?? 200);
-  const skip  = Number(req.query.skip ?? 0);
+  const skip = Number(req.query.skip ?? 0);
   const currency = (req.query.currency || "").toUpperCase();
   const rate = Number(req.query.rate || DEFAULT_USD_ARS);
 
-  console.log(`Buscando: ${q}, limit=${limit}, skip=${skip}, currency=${currency}, rate=${rate}`);
+  console.log(
+    `Buscando: ${q}, limit=${limit}, skip=${skip}, currency=${currency}, rate=${rate}`
+  );
 
   try {
     let products = [];
@@ -256,30 +233,29 @@ app.get("/search", async (req, res) => {
       total = s1.data.total;
       console.log(`Encontrados ${total} productos para "${q}" (texto libre)`);
     } else {
-      // Traigo todo y filtro por brand (no uses el mismo limit/skip del query acá)
+      // 2) Si no hubo resultados, traemos un batch y filtramos por brand
       const all = await axios.get(`${BASE}/products`, { params: { limit: 200, skip: 0 } });
-    
+
       const qn = norm(q);
       const list = all.data?.products ?? [];
-    
-      // Filtrado robusto aunque haya productos sin brand
-      const filtered = list.filter(p => norm(p.brand).includes(qn));
-    
+
+      // Robusto ante productos sin brand
+      const filtered = list.filter((p) => norm(p.brand).includes(qn));
+
       total = filtered.length;
       products = filtered.slice(skip, skip + limit);
-    
-      console.log(`Encontrados ${total} productos para "${q}" (por brand)`);
-    }    
 
-    // 3) Map a tu formato (ajustá si tenés helpers como convertPriceUSD/formatCurrency)
+      console.log(`Encontrados ${total} productos para "${q}" (por brand)`);
+    }
+
+    // 3) Map uniforme a tu formato
     const items = itemsReturn(products, currency, rate);
     return res.json({ total, limit, skip, items });
   } catch (e) {
-    console.error(e.message);
+    console.error(e?.message || e);
     return res.status(500).json({ error: "No se pudieron buscar productos" });
   }
 });
-
 
 // ---------------------------------------------------
 // Start

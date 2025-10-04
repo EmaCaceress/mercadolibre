@@ -12,7 +12,6 @@ function useQuery() {
 // Base del backend (Express)
 const API_BASE = "http://localhost:4000";
 
-
 export default function SearchPage() {
   const params = useQuery();
   const q = params.get("q") || "";
@@ -21,6 +20,7 @@ export default function SearchPage() {
   const skip = (page - 1) * limit;
   const [loading, setLoading] = useState(false);
   const [products, setProducts] = useState([]);
+  const [productsOld, setProductsOld] = useState([]);
   const [total, setTotal] = useState(0);
   const pages = Math.ceil(total / limit);
   const [f, setF] = useState({
@@ -37,11 +37,23 @@ export default function SearchPage() {
       .then(res => res.json())
       .then(data => {
         setProducts(data.items);
+        setProductsOld(data.items);
       })
       .catch(err => console.error("Error al traer productos:", err));
-
-
+      
   }, [q, page]);
+
+  useEffect(() => {
+    setProducts(productsOld.filter(p => {
+      if (f.arrivesToday && p.envio?.time !== "Llega gratis hoy") return false;
+      if (f.fullShipping && !p.envio?.full) return false;
+      if (f.international && !p.international) return false;
+      if (f.freeShipping && p.envio?.time !== ("Envio gratis" || "Llega gratis mañana")) return false;
+      if (f.bestInstallments && !p.cuotas) return false;
+      return true;
+    }));
+
+  }, [f]);
 
   useEffect(() => {
     setBrands([]);
@@ -53,9 +65,9 @@ export default function SearchPage() {
       )
     ];
     setBrands(uniqueBrands);
+    setTotal(products.length)
   }, [products, q]);
-  useEffect(() => {console.log(q)}, [q]);
-  useEffect(() => {setTotal(products.length)}, [products]);
+  
   return (
     <div className="SearchPageGrid">
         {!loading ? (
