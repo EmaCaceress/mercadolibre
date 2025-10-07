@@ -95,38 +95,38 @@ function buildItem(p, { currency, rate }) {
   const cuotasNum = Math.round(Math.random() * 12); // 0..12
   const envioOn = Math.round(Math.random()) === 1;  // true/false
   const hayDescuento = Math.round(Math.random()) === 0; // 50/50
-
+  const international = Math.round(Math.random()) === 1; // true/false
   // Envío (si envioOn true, definimos objeto; si no, null)
-  const envio =
-    envioOn
-      ? {
-          time: getRandomEnvioText(),
-          // Antes esta lógica siempre terminaba en 1; ahora sí puede ser 1 o null
-          full: Math.round(Math.random()) === 1 ? 1 : null,
-        }
-      : null;
+  const envio = envioOn 
+    ? {
+        time: getRandomEnvioText(),
+        // Antes esta lógica siempre terminaba en 1; ahora sí puede ser 1 o null
+        full: Math.round(Math.random()) === 1 ? 1 : null,
+      }
+    : null;
 
   // Cuotas: mismas condiciones que tenías (divisible por 3, sin envío y > 0)
-  const cuotas =
-    cuotasNum % 3 === 0 && !envioOn && cuotasNum !== 0
-      ? `Cuota promocionada en ${cuotasNum} cuotas de $${Math.round(
-          priceConv.value / cuotasNum
-        )}`
-      : null;
+  const cuotas = cuotasNum % 3 === 0 && !envioOn && cuotasNum !== 0
+    ? `Cuota promocionada en ${cuotasNum} cuotas de $${Math.round(
+        priceConv.value / cuotasNum
+      )}`
+    : null;
 
   // Descuento: si “hayDescuento”, calculamos oldPrice y string de descuento
   const oldPrice = hayDescuento
-    ? Math.round((priceConv.value * p.discountPercentage) / 100 - priceConv.value)
+    ? Math.round((priceConv.value * p.discountPercentage) / 100 + priceConv.value)
     : null;
 
-  const discount =
-    hayDescuento && p.discountPercentage
-      ? `${Math.round(p.discountPercentage)}% OFF`
-      : null;
+  const discount = hayDescuento && p.discountPercentage
+    ? `${Math.round(p.discountPercentage)}% OFF`
+    : null;
   
-  const promoCuota = hayDescuento
-  ? priceConv.value / 3
-  : null;
+  const promoCuota = !hayDescuento
+    ? (() => {
+      const price = priceConv.value * p.discountPercentage / 100 + priceConv.value;
+      return { price, cuota: price / 3 };
+    })()
+    : null;
 
   return {
     id: p.id,
@@ -146,6 +146,7 @@ function buildItem(p, { currency, rate }) {
     brand: p.brand,
     category: categoryMap[p.category] || p.category,
     images: p.images,
+    international,
   };
 }
 

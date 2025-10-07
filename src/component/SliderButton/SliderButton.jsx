@@ -78,13 +78,13 @@ function BrandLogo({ brand, size = 80 }) {
  * - cardg: gap (px)
  * - cardH: alto del carrusel (px)
  */
-const SliderButtons = ({ slider, title, cardw, cardg, cardH }) => {
+const SliderButtons = ({ slider, title, cardw, cardg, cardH, cant = 9}) => {
   const [desplaceCards, setDesplaceCards] = useState(0);
   const [currentPage, setCurrentPage] = useState(0);
 
   const cardWidth = cardw;
   const cardGap = cardg;
-  const visibleAreaWidth = (cardWidth + cardGap) * 9; // area del contenedor
+  const visibleAreaWidth = (cardWidth + cardGap) * cant; // area del contenedor
   const cardsPerPage = Math.floor(visibleAreaWidth / (cardWidth + cardGap)) || 1; // area de cada card con su gap
   const totalPages = Math.ceil((slider?.length || 0) / cardsPerPage); //total de paginas
 

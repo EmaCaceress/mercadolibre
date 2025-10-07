@@ -106,32 +106,30 @@ const Card = ({prod, cardWidth, cardHeight}) => {
         )
         }
 
+        {/* COMPRA INTERNACIONAL */}
+        {prod.international && (
+        <p className="card__intl">COMPRA INTERNACIONAL</p>
+        )}
+
+
+
         {/* OTRA OPCIÓN DE COMPRA */}
-            {Number(cardWidth) >= 200 && prod.promoCuota && (
-            <div className="card__alt-offer">
-                <p className="card__alt-title">Otra opción de compra</p>
+        {Number(cardWidth) >= 200 && prod.promoCuota && (
+        <div className="card__alt-offer">
+            <p className="card__alt-title">Otra opción de compra</p>
 
-                {prod.oldPrice && (
-                <p className="card__alt-old">
-                    ${prod.oldPrice.toLocaleString("es-AR")}
-                </p>
-                )}
-
-                <div className="card__alt-row">
+            <div className="card__alt-row">
                 <span className="card__alt-price">
-                    ${prod.price.toLocaleString("es-AR")}
+                    ${Math.round(prod.promoCuota.price).toLocaleString("es-AR") }
                 </span>
-                {prod.discount && (
-                    <span className="card__alt-off">{prod.discount}</span>
-                )}
-                </div>
-
-                <p className="card__alt-cuotas">
-                Mismo precio 3 cuotas de $
-                {Math.round(prod.price / 3).toLocaleString("es-AR")}
-                </p>
             </div>
-            )}
+
+            <p className="card__alt-cuotas">
+            Mismo precio 3 cuotas de $
+            {Math.round(prod.promoCuota.cuota).toLocaleString("es-AR")}
+            </p>
+        </div>
+        )}
 
     </Link>
   ) 

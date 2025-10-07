@@ -162,4 +162,14 @@
     // verde ML
     margin: 0;
   }
+  &__intl {
+    margin: 2px 0 6px 0;
+    font-size: $font-size-xs;     // chiquito
+    font-weight: 700;             // fuerte
+    color: $color-link-600;       // azul “link”
+    text-transform: uppercase;    // MAYÚSCULAS
+    letter-spacing: .3px;
+    display: inline-block;
+    font-style: italic;
+  }
 }
