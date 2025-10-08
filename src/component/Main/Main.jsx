@@ -38,7 +38,7 @@ const Main = () => {
       .then(res => res.json())
       .then(data => {
         setProducts(data.items)
-        setSliderFirst(prev => [...data.items.slice(0,3), ...prev])
+        setSliderFirst(prev => [...data.items.slice(0,3), ...prev.slice(0,1), ...data.items.slice(3,4), ...prev.slice(1,)] )
       })
       .catch(err => console.error("Error al traer productos:", err));
   }, []);

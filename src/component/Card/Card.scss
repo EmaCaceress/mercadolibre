@@ -12,8 +12,7 @@
   background: $color-surface;
   &__images {
     display: grid;
-    grid-template-rows: auto auto;
-    gap: 8px;
+    grid-template-rows: 101px 101px;
     grid-template-columns: repeat(2, 1fr);
   }
   &__image {
@@ -76,7 +75,6 @@
     font-size: $font-size-sm;
   }
   &__name {
-    margin-bottom: $space-2-5;
     font-size: $font-size-sm;
     font-weight: 100;
   }
@@ -86,7 +84,7 @@
     align-items: center;
   }
   &__old-price {
-    font-size: 0.85rem;
+    font-size: $font-size-xs;
     color:  $color-neutral-500 ;
     text-decoration: line-through;
   }
@@ -101,12 +99,12 @@
   &__envio,
   &__full {
     color: $color-success-500;
-    font-size: 0.8rem;
+    font-size: $font-size-xs;
     white-space: nowrap;
   }
   &__envio{
     display: inline-block;
-    font-size: $font-size-sm;
+    font-size: $font-size-xs;
     font-weight: 900;
   }
   &__cuotas{
@@ -163,7 +161,6 @@
     margin: 0;
   }
   &__intl {
-    margin: 2px 0 6px 0;
     font-size: $font-size-xs;     // chiquito
     font-weight: 700;             // fuerte
     color: $color-link-600;       // azul “link”

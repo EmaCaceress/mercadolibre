@@ -95,7 +95,10 @@ const Card = ({prod, cardWidth, cardHeight}) => {
         {prod.envio?.time && prod.envio?.full && (
             <span className="card__full">⚡ FULL</span>
         )}
-
+        {/* COMPRA INTERNACIONAL */}
+        {prod.international && (
+        <p className="card__intl">COMPRA INTERNACIONAL</p>
+        )}
         </div>
 
         {
@@ -106,10 +109,7 @@ const Card = ({prod, cardWidth, cardHeight}) => {
         )
         }
 
-        {/* COMPRA INTERNACIONAL */}
-        {prod.international && (
-        <p className="card__intl">COMPRA INTERNACIONAL</p>
-        )}
+
 
 
 
