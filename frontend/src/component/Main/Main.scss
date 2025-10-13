@@ -1,0 +1,226 @@
+@use '../../styles/variables' as *;
+
+.main {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  padding-bottom: 2rem;
+  font-family: $font-family-sans;
+  overflow-x: hidden;
+  .back {
+    position: absolute;
+    z-index: -5;
+    width: 100%;
+    height: 100%;
+    background: $color-surface-subtle;
+  }
+  .hero {
+    position: relative;
+    display: flex;
+    color: $color-neutral-50;
+    height: 35vh;
+    &__slider {
+      z-index: -5;
+      display: flex;
+      width: calc(100vw * 10);
+    }
+    &__slide {
+      height: 60vh;
+      width: 100vw;
+      flex-shrink: 0;
+      background-size: cover;
+      background-position: center;
+    }
+    &__overlay {
+      position: absolute;
+      z-index: -1;
+      bottom: -30vh;
+      width: 100vw;
+      height: 30vh;
+      background: linear-gradient(to bottom, transparent 30%, $color-surface-subtle 80%);
+    }
+  }
+  .card-slider {
+    display: flex;
+    justify-content: center;
+    &__container {
+      position: relative;
+      width: $container-max-width;
+      padding: $space-sm 0;
+    }
+  }
+  .product-carousel {
+    align-items: center;
+    flex-direction: column;
+    display: flex;
+    &__container {
+      position: relative;
+      padding: $space-xl;
+      border-radius: $radius-8;
+      width: 1180px;
+      background: $color-surface;
+      box-shadow: $shadow-sm;
+    }
+  }
+  .meli-plus {
+    display: flex;
+    justify-content: center;
+    font-family: $font-family-sans;
+    &__container {
+      width: 1180px;
+      border-radius: $radius-8;
+      color: $color-neutral-50;
+      box-shadow: $shadow-sm;
+    }
+    &__header {
+      display: flex;
+      justify-content: space-between;
+      border-radius: $radius-8 $radius-8 0 0;
+      background: linear-gradient(-90deg, $color-brand-secondary-500 0%, $color-brand-secondary-600 100%);
+      padding: 1.1rem 1.6rem;
+      align-items: center;
+      .meli-plus__suscripcion {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        font-size: 1.2rem;
+        font-weight: bold;
+        img {
+          width: 11%;
+          display: inline;
+        }
+      }
+      .meli-plus__button {
+        border: none;
+        padding: 0.8rem 1.5rem;
+        border-radius: $radius-6;
+        color: $color-neutral-50;
+        font-weight: bold;
+        font-size: 0.9rem;
+        background: $color-accent-500;
+        cursor: pointer;
+      }
+    }
+    &__body {
+      padding: 1.5rem;
+      border-radius: 0 0 $radius-8 $radius-8;
+      color: $color-neutral-800;
+      background: $color-surface;
+      .meli-plus__title {
+        margin-bottom: 1rem;
+        font-size: 1.2rem;
+        font-weight: bold;
+      }
+      .meli-plus__benefits {
+        flex-wrap: wrap;
+        justify-content: space-between;
+        display: flex;
+        list-style: none;
+        .meli-plus__benefit {
+          border-radius: $radius-8;
+          display: flex;
+          flex-direction: row;
+          align-items: center;
+          width: 30%;
+          text-align: center; // centra el texto
+          font-size: 0.9rem;
+          p {
+            padding: $space-md;
+          }
+          .meli-plus__container-i {
+            border-radius: $radius-8;
+            padding: $space-xl;
+            background-color: $color-surface-accent-50;
+            i {
+              margin-bottom: 0.5rem;
+              font-size: $font-size-2xl;
+              color: $color-accent-600;
+            }
+          }
+        }
+      }
+    }
+  }
+  .mercado-play {
+    display: flex;
+    justify-content: center;
+    &__container {
+      position: relative;
+      border-radius: $radius-8;
+      width: 1180px;
+      height: 400px;
+      display: flex;
+      justify-content: space-between;
+      font-family: $font-family-sans;
+      overflow: hidden;
+    }
+    &__background {
+      position: absolute;
+      top: 0;
+      z-index: -1;
+      height: 100%;
+    }
+    &__video {
+      display: flex;
+      align-items: center;
+      padding: $space-xl;
+      width: 50%;
+      height: 100%;
+      object-fit: cover;
+      display: inline;
+      & video{
+        width: 100%;
+        height: 100%;
+      }
+    }
+    &__overlay {
+      inset: 0;
+      z-index: 2;
+      padding: $space-xl;
+      padding-left: $space-xl+$space-xl;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      gap: 1rem;
+      color: $color-neutral-50;
+      font-size: $font-size-md;
+      background: linear-gradient(to right, $color-overlay-700 40%, $color-overlay-0 100%);
+    }
+    &__badge {
+      height: 70px;
+      width: 180px;
+    }
+    &__title {
+      width: 70%;
+      font-weight: bold;
+      mfont-size: $font-size-2xl+5;
+      argin: 0;
+    }
+    &__label {
+      padding: 0.3rem 0.6rem;
+      border-radius: $radius-18;
+      width: fit-content;
+      color: $color-neutral-50;
+      font-weight: 600;
+      background: $color-success-500;
+    }
+    &__button {
+      padding: 0.6rem 1.2rem;
+      border: none;
+      border-radius: $radius-4;
+      width: fit-content;
+      color: $color-neutral-50;
+      font-weight: bold;
+      background: rgba($color-neutral-600, 0.3);
+      cursor: pointer;
+    }
+  }
+  @media (min-width: 768px) and (max-width: 1200px) {
+    .card-slider {
+      &__container {
+        width: 1000px;
+      }
+    }
+  }
+}

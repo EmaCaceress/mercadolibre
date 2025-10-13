@@ -1,0 +1,195 @@
+@use '../../styles/variables' as *;
+@use "sass:math";
+
+.footer {
+  padding: 2rem 0;
+  font-family: 'Proxima Nova', -apple-system, Roboto, Arial, sans-serif;
+  font-size: $font-size-sm;
+  color: $color-neutral-800;
+  background-color: $color-neutral-100;
+  .benefits {
+    display: flex;
+    justify-content: center;
+    align-items: start;
+    margin-bottom: 2rem;
+    &__benefit {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      flex: 1;
+      max-width: 300px;
+      padding: 0 1rem;
+    }
+    &__divitions{
+      margin: 4rem;
+      height: 70px;
+      width: 1px;
+      border-left: $color-neutral-600 1px solid;
+      opacity: 0.3;
+    }
+    // íconos
+    i {
+      margin-bottom: 1rem;
+      font-size: $font-size-2xl*2;
+      color: $color-neutral-600;
+    }
+    // texto
+    &__text {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center; // centra el texto
+      h3 {
+        margin: 0;
+        font-size: 1.1rem;
+        font-weight: 600;
+        text-align: center;
+      }
+      p {
+        margin: 0.5rem 0;
+        color: $color-neutral-600;
+        font-size: 0.95rem;
+      }
+      a {
+        color: $color-info-500;
+        font-size: 0.9rem;
+        text-decoration: none;
+        // hover state
+        &:hover {
+          text-decoration: underline;
+        }
+      }
+    }
+    // Borde izquierdo (líneas divisoras)
+    &:not(:first-child) {
+      border-left: 1px solid $color-neutral-300;
+      padding-left: 2rem;
+    }
+  }
+  .legal {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 2rem;
+    &__box {
+      padding: 1rem 1rem;
+      width: 560px;
+      border: 1px rgba($color-neutral-600,0.3) solid;
+      border-radius: $radius-6;
+      display: flex;
+      justify-content: center;
+      flex-direction: column;
+      text-align: center; // centra el texto
+      &:nth-child(1){
+        margin-right: 80px;
+      }
+      h4 {
+        margin-bottom: 0.5rem;
+        font-weight: 600;
+      }
+      a {
+        display: block;
+        margin-bottom: 0.25rem;
+        color: $color-info-500;
+        text-decoration: none;
+        // hover state
+        &:hover {
+          text-decoration: underline;
+        }
+      }
+    }
+  }
+  .information{
+    &__container{
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+      border-bottom: 1px solid rgba($color-neutral-600,0.3);
+      font-size: math.div($font-size-xs, 1.35);
+      & i{
+        font-size: $font-size-xs;
+      }
+    }
+    &__title{
+      position: relative;
+      bottom:-2.5px;
+      z-index: 5;
+      display: flex;
+      align-items: center;
+      padding:0.5rem 1rem;
+      gap: 1rem;
+      border: 1px solid rgba($color-neutral-600,0.3);
+      border-bottom: none;
+      border-radius: $radius-6 $radius-6 0 0;
+      background-color: $color-surface-subtle;
+      &.visible {
+        background-color: $color-surface-subtle;
+      }
+      &.hidden {
+        background-color: $color-neutral-100;
+      }
+    }
+    &__text {
+      width: 100%;
+      display: flex;
+      justify-content: center;
+      border-top: 1px solid rgba($color-neutral-600,0.3);
+      max-height: 0;
+      background-color: $color-surface-subtle;
+      transition: all 0.4s ease;
+      opacity: 0;
+      overflow: hidden;
+      visibility: hidden;
+      &.visible {
+        max-height: 1000px;
+        // algo grande, ajustá según necesidad
+        opacity: 1;
+        background-color: $color-surface-subtle;
+        visibility: visible;
+      }
+      &.hidden {
+        max-height: 0;
+        opacity: 0;
+        visibility: hidden;
+      }
+    }
+    &__columns{
+      display: flex;
+      gap: 3.5rem;
+      padding: 2rem 0;
+    }
+    &__column{
+      h4{
+        margin-bottom:1rem;
+        font-size: $font-size-sm;
+      }
+      ul{
+        color: $color-neutral-600;
+        font-size: $font-size-xs;
+      }
+    }
+  }
+  &__bottom {
+    // border-top: 1px solid rgba($color-text-grey,0.3);
+    margin-top: 1.5rem;
+    padding: 0 100px;
+    padding-top: 1.5rem;
+    text-align: left;
+    ul {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: left;
+      gap: 1rem;
+      margin-bottom: 1rem;
+      list-style: none;
+      li a {
+        text-decoration: none;
+      }
+    }
+    p {
+      font-size: $font-size-xs;
+      color: $color-neutral-600;
+    }
+  }
+}

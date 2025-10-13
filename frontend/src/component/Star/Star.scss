@@ -1,0 +1,12 @@
+@use '../../styles/variables' as *;
+
+.stars {
+  line-height: 1;
+}
+.star {
+  color: $color-neutral-300;
+  font-size: 18px;
+  &--on {
+    color: $color-warning-500;
+  }
+}
