@@ -105,7 +105,7 @@ const ProductDetail = () => {
     // Efecto 4: traer productos relacionados (slider)
     // ---------------------
     useEffect(() => {
-      fetch("http://localhost:4000/products")
+      fetch(`${API}/products`)
         .then(res => res.json())
         .then(data => {
           setProducts(data.items);
