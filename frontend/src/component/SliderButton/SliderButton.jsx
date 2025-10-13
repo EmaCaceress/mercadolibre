@@ -108,7 +108,12 @@ const SliderButtons = ({ slider, title, cardw, cardg, cardH, cant = 9}) => {
   return (
     <>
       {currentPage > 0 && (
-        <button className="slider-button slider-button--left" onClick={onPrev}>
+        <button className="slider-button slider-button--left" onClick={onPrev} style={{
+          ...(cardH < 100 && {
+          background: "transparent",
+          left: "-60px",
+          boxShadow: "none"
+        })}}>
           <FiChevronLeft />
         </button>
       )}
@@ -123,7 +128,7 @@ const SliderButtons = ({ slider, title, cardw, cardg, cardH, cant = 9}) => {
             transition: "transform 0.3s ease-in-out",
             display: "flex",
             gap: `${cardGap}px`,
-            height: `${cardH}px`
+            height: `${cardH}px`,
           }}
         >
           {slider.map((prod, idx) =>
@@ -139,7 +144,12 @@ const SliderButtons = ({ slider, title, cardw, cardg, cardH, cant = 9}) => {
       </div>
 
       {currentPage < totalPages - 1 && (
-        <button className="slider-button slider-button--right" onClick={onNext}>
+        <button className="slider-button slider-button--right" onClick={onNext} style={{
+          ...(cardH < 100 && {
+          background: "transparent",
+          right: "-60px",
+          boxShadow: "none"
+        })}}>
           <FiChevronRight />
         </button>
       )}

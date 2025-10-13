@@ -109,6 +109,7 @@ const ProductDetail = () => {
         .then(res => res.json())
         .then(data => {
           setProducts(data.items);
+
         })
         .catch(err => console.error("Error al traer productos:", err));
     }, []);
@@ -342,14 +343,11 @@ const ProductDetail = () => {
             <hr className="ProductDetail-description__divider" />
 
             <p className="ProductDetail-description__p">
-              Suplemento Dietario a base de Ultra Concentrado de proteínas de Suero Lácteo. Desarrollado
-              para satisfacer las necesidades de los atletas; contiene aminoácidos esenciales y no
-              esenciales para construir masa muscular luego del entrenamiento intenso.
+                Lorem ipsum dolor sit amet consectetur adipisicing elit. Corrupti laborum illum dicta vel asperiores at, facilis ratione ullam distinctio placeat natus, provident, sed esse eligendi fugit repellat explicabo magnam laudantium.q
             </p>
 
             <p className="ProductDetail-description__p">
-              <strong>Preparación:</strong> Diluir 1 medida colmada en 150 ProductDetail de agua o leche
-              descremada. Consumir 1 a 2 porciones diarias entre comidas.
+              <strong>Also: </strong> Lorem ipsum, dolor sit amet consectetur adipisicing elit. Iusto deleniti culpa eos, velit numquam officiis tempore iure accusantium eum? Incidunt beatae consequuntur, perferendis id ut velit aut error veritatis vel. 
             </p>
           </div>
 
