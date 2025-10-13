@@ -1,27 +1,14 @@
-// =====================
-// Imports
-// =====================
 import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import "./ProductDetail.scss";
 import SliderButtons from "../SliderButton/SliderButton";
 import Star from "../Star/Star";
+const API = import.meta.env.VITE_API_BASE || "http://localhost:4000";
 
-// =====================
-// UI helpers (componentes puros / presentacionales)
-// =====================
-/**
- * Fila de estrellas de calificacion
- * - value: numero de 0 a 5
- */
 const StarRow = ({ value = 0 }) => (
   <Star value={value}/> 
 );
 
-// =====================
-// Componente principal: ProductDetail
-// - Trae producto por id, maneja imagenes y calificaciones
-// =====================
 const ProductDetail = () => {
     const { id } = useParams(); // 👈 captura el id de la URL
 
@@ -42,38 +29,14 @@ const ProductDetail = () => {
     const [productId, setProductId] = useState(null);
     const [products, setProducts] = useState([]);
     const [imagen, setImagen] = useState(null); // imagen seleccionada a mostrar en grande
-    // useEffect(() => {
-    //   const sidebar = document.querySelector(".ProductDetail-bar__container");
-    //   const container = document.querySelector(".ProductDetail-bar");
-    //
-    //   const onScroll = () => {
-    //     const sidebarRect = sidebar.getBoundingClientRect();
-    //     const containerRect = container.getBoundingClientRect();
-    //     const distance = window.innerHeight - containerRect.bottom;
-    //     const espaceBottom = containerRect.height - sidebarRect.height;
-    //     const desplace = distance + espaceBottom;
-    //
-    //     if (espaceBottom >= desplace && desplace >= 0) {
-    //       const desplaceIf = desplace;
-    //       console.log(desplaceIf);
-    //       setDesplaceY(desplaceIf);
-    //     }
-    //   };
-    //
-    //   window.addEventListener("scroll", onScroll);
-    //   return () => window.removeEventListener("scroll", onScroll);
-    // }, []);
 
-    // ---------------------
-    // Efecto 1: traer producto por id
-    // ---------------------
     useEffect(() => {
         let cancelled = false;
         const controller = new AbortController();
         
         async function load() {
             try {
-            const res = await fetch(`http://localhost:4000/products/${id}`, {
+            const res = await fetch(`${API}/products/${id}`, {
                 signal: controller.signal
             });
             const data = await res.json();

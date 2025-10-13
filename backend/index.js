@@ -21,11 +21,12 @@ app.use(cors({
     return cb(new Error("CORS blocked"));
   }
 }));
+app.get("/health", (_req,res)=>res.send("ok"));
 
 // ---------------------------------------------------
 // Config
 // ---------------------------------------------------
-const PORT = 4000 || process.env.PORT;
+const PORT = process.env.PORT || 4000;
 const BASE = "https://dummyjson.com";
 const DEFAULT_USD_ARS = Number(process.env.USD_ARS || 1300);
 

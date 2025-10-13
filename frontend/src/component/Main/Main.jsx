@@ -28,13 +28,14 @@ const cards = [
 ];
 
 const Main = () => {
+  const API = import.meta.env.VITE_API_BASE || "http://localhost:4000";
   const [index, setIndex] = useState(0);
   const sliderRef = useRef(null);
   const totalSlides = slider.length;
   const [products, setProducts] = useState([]);
   const [sliderFirst, setSliderFirst] = useState(cards);
   useEffect(() => {
-    fetch("http://localhost:4000/products")
+    fetch(`${API}/products`)
       .then(res => res.json())
       .then(data => {
         setProducts(data.items)

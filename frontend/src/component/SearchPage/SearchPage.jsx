@@ -10,7 +10,7 @@ function useQuery() {
 }
 
 // Base del backend (Express)
-const API_BASE = "http://localhost:4000";
+const API = import.meta.env.VITE_API_BASE || "http://localhost:4000";
 
 export default function SearchPage() {
   const params = useQuery();
@@ -33,7 +33,7 @@ export default function SearchPage() {
   const [brands, setBrands] = useState([]);
 
   useEffect(() => {
-    fetch(`${API_BASE}/search?q=${encodeURIComponent(q)}&limit=${limit}&skip=${skip}`)
+    fetch(`${API}/search?q=${encodeURIComponent(q)}&limit=${limit}&skip=${skip}`)
       .then(res => res.json())
       .then(data => {
         setProducts(data.items);
