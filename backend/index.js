@@ -17,6 +17,7 @@ const allowed = [
 ];
 app.use(cors({
   origin: (origin, cb) => {
+    console.log("CORS origin:", origin);
     if (!origin || allowed.includes(origin)) return cb(null, true);
     return cb(new Error("CORS blocked"));
   }
