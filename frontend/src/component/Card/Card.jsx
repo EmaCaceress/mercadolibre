@@ -41,67 +41,73 @@ const Card = ({ prod, cardWidth, cardHeight }) => {
           />
         </div>
       )}
-
-      <div className="card__container">
-        {/* Nombre del producto */}
-        {prod.titleSecond && (
-          <p className="card__name">{prod.titleSecond}</p>
-        )}
-
-        {Number(cardWidth) >= 200 && (
-          <div>
-            <p className="card__name--extra">{prod.brand}</p>
-            <Star value={Math.round(prod.rating)} />
-          </div>
-        )}
-
-        {/* Precio tachado (si existe) */}
-        {prod.oldPrice && (
-          <p className="card__old-price">
-            ${prod.oldPrice.toLocaleString()}
-          </p>
-        )}
-
-        {/* Precio actual con descuento (si existe) */}
-        {prod.price && (
-          <div className="card__containerPrice">
-            <div className="card__price">
-              ${prod.price.toLocaleString()}
-            </div>
-            {prod.discount && (
-              <span className="card__discount">
-                {prod.discount}
-              </span>
+      
+      {
+        (prod.titleSecond || prod.price) && (
+          <div className="card__container">
+      
+            {/* Nombre del producto */}
+            {prod.titleSecond && (
+              <p className="card__name">{prod.titleSecond}</p>
+            )}
+    
+            {Number(cardWidth) >= 200 && (
+              <div>
+                <p className="card__name--extra">{prod.brand}</p>
+                <Star value={Math.round(prod.rating)} />
+              </div>
+            )}
+    
+            {/* Precio tachado (si existe) */}
+            {prod.oldPrice && (
+              <p className="card__old-price">
+                ${prod.oldPrice.toLocaleString()}
+              </p>
+            )}
+    
+            {/* Precio actual con descuento (si existe) */}
+            {prod.price && (
+              <div className="card__containerPrice">
+                <div className="card__price">
+                  ${prod.price.toLocaleString()}
+                </div>
+                {prod.discount && (
+                  <span className="card__discount">
+                    {prod.discount}
+                  </span>
+                )}
+              </div>
+            )}
+    
+            {/* Cuotas disponibles (si existe)*/}
+            {prod.cuotas && (
+              <p className="card__cuotas">{prod.cuotas}</p>
+            )}
+    
+            {/* Envío (si existe) */}
+            {prod.envio ? (
+              <p
+                className={`card__envio ${
+                  prod.envio.time === "Llega gratis hoy" && Number(cardWidth) >= 200 ? "hoy" : ""
+                }`}
+              >
+                {Number(cardWidth) >= 200 ? prod.envio.time : "Envio gratis"}
+              </p>
+            ) : null}
+    
+            {/* Sello FULL (si existe) */}
+            {prod.envio?.time && prod.envio?.full && (
+              <span className="card__full">⚡ FULL</span>
+            )}
+    
+            {/* COMPRA INTERNACIONAL */}
+            {prod.international && (
+              <p className="card__intl">COMPRA INTERNACIONAL</p>
             )}
           </div>
-        )}
+        )
+      }
 
-        {/* Cuotas disponibles (si existe)*/}
-        {prod.cuotas && (
-          <p className="card__cuotas">{prod.cuotas}</p>
-        )}
-
-        {/* Envío (si existe) */}
-        {prod.envio ? (
-          <p
-            className={`card__envio ${
-              prod.envio.time === "Llega gratis hoy" ? "hoy" : ""
-            }`}
-          >
-            {Number(cardWidth) >= 200 ? prod.envio.time : "Envio gratis"}
-          </p>
-        ) : null}
-
-        {/* Sello FULL (si existe) */}
-        {prod.envio?.time && prod.envio?.full && (
-          <span className="card__full">⚡ FULL</span>
-        )}
-
-        {/* COMPRA INTERNACIONAL */}
-        {prod.international && (
-          <p className="card__intl">COMPRA INTERNACIONAL</p>
-        )}
-      </div>
 
       {prod.button && (
         <div href={prod.buttonLink} className="card__link">

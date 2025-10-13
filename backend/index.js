@@ -25,7 +25,7 @@ app.use(cors({
 // ---------------------------------------------------
 // Config
 // ---------------------------------------------------
-const PORT = process.env.PORT || 3000;
+const PORT = 4000 || process.env.PORT;
 const BASE = "https://dummyjson.com";
 const DEFAULT_USD_ARS = Number(process.env.USD_ARS || 1300);
 
