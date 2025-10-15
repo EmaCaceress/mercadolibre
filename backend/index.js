@@ -188,7 +188,6 @@ app.get("/products", async (req, res) => {
   const skip = Number(req.query.skip ?? 0);
   const currency = (req.query.currency || "").toUpperCase();
   const rate = Number(req.query.rate || DEFAULT_USD_ARS);
-
   try {
     const { data } = await axios.get(`${BASE}/products`, { params: { limit, skip } });
 
@@ -206,13 +205,11 @@ app.get("/products", async (req, res) => {
 app.get("/products/:id", async (req, res) => {
   const currency = (req.query.currency || "").toUpperCase();
   const rate = Number(req.query.rate || DEFAULT_USD_ARS);
-
   try {
     const { data: p } = await axios.get(`${BASE}/products/${req.params.id}`);
 
     // ✅ reutilizamos la misma forma de construir el item
     const item = buildItem(p, { currency, rate });
-
     res.json(item);
   } catch (e) {
     const status = e.response?.status || 500;
@@ -228,11 +225,7 @@ app.get("/search", async (req, res) => {
   const skip = Number(req.query.skip ?? 0);
   const currency = (req.query.currency || "").toUpperCase();
   const rate = Number(req.query.rate || DEFAULT_USD_ARS);
-
-  console.log(
-    `Buscando: ${q}, limit=${limit}, skip=${skip}, currency=${currency}, rate=${rate}`
-  );
-
+  
   try {
     let products = [];
     let total = 0;
@@ -243,7 +236,6 @@ app.get("/search", async (req, res) => {
     if (s1.data.total > 0 || !q.trim()) {
       products = s1.data.products;
       total = s1.data.total;
-      console.log(`Encontrados ${total} productos para "${q}" (texto libre)`);
     } else {
       // 2) Si no hubo resultados, traemos un batch y filtramos por brand
       const all = await axios.get(`${BASE}/products`, { params: { limit: 200, skip: 0 } });
