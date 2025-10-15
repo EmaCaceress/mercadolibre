@@ -3,6 +3,7 @@ import { Link, useLocation } from "react-router-dom";
 import "./SearchPage.scss";
 import Card from "../Card/Card";
 import SliderButtons from "../SliderButton/SliderButton";
+import { productsSearch } from "../../api/server";
 
 function useQuery() {
   const { search } = useLocation();
@@ -33,8 +34,7 @@ export default function SearchPage() {
   const [brands, setBrands] = useState([]);
 
   useEffect(() => {
-    fetch(`${API}/search?q=${encodeURIComponent(q)}&limit=${limit}&skip=${skip}`)
-      .then(res => res.json())
+    productsSearch({q: q, limit: 200})
       .then(data => {
         setProducts(data.items);
         setProductsOld(data.items);

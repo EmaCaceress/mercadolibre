@@ -133,7 +133,6 @@
             padding: $space-xl;
             background-color: $color-surface-accent-50;
             i {
-              margin-bottom: 0.5rem;
               font-size: $font-size-2xl;
               color: $color-accent-600;
             }
@@ -194,8 +193,8 @@
     &__title {
       width: 70%;
       font-weight: bold;
-      mfont-size: $font-size-2xl+5;
-      argin: 0;
+      font-size: $font-size-2xl+5;
+      margin: 0;
     }
     &__label {
       padding: 0.3rem 0.6rem;
@@ -216,11 +215,11 @@
       cursor: pointer;
     }
   }
-  @media (min-width: 768px) and (max-width: 1200px) {
-    .card-slider {
-      &__container {
-        width: 1000px;
-      }
-    }
-  }
+  // @media (min-width: 768px) and (max-width: 1200px) {
+  //   .card-slider {
+  //     &__container {
+  //       width: 1000px;
+  //     }
+  //   }
+  // }
 }

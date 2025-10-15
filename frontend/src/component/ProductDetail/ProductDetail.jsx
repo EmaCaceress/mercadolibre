@@ -3,85 +3,50 @@ import { useParams } from "react-router-dom";
 import "./ProductDetail.scss";
 import SliderButtons from "../SliderButton/SliderButton";
 import Star from "../Star/Star";
-const API = import.meta.env.VITE_API_BASE || "http://localhost:4000";
+import { productsList, productGetById} from "../../api/server";
 
 const StarRow = ({ value = 0 }) => (
   <Star value={value}/> 
 );
 
 const ProductDetail = () => {
-    const { id } = useParams(); // 👈 captura el id de la URL
-
-    // ---------------------
-    // Estados de UI
-    // ---------------------
+    const { id } = useParams(); 
     const [descOpen, setDescOpen] = useState(false);
     const [avg, setAvg] = useState(0);
     const [counts, setCounts] = useState({});
     const [total, setTotal] = useState(0);
-   
-    // Control del desplazamiento de la barra lateral (sticky)
-    const [desplaceY, setDesplaceY] = useState(0);
-
-    // ---------------------
-    // Estados de datos
-    // ---------------------
     const [productId, setProductId] = useState(null);
     const [products, setProducts] = useState([]);
-    const [imagen, setImagen] = useState(null); // imagen seleccionada a mostrar en grande
+    const [imagen, setImagen] = useState(null); 
 
-    useEffect(() => {
-        let cancelled = false;
-        const controller = new AbortController();
-        
-        async function load() {
-            try {
-            const res = await fetch(`${API}/products/${id}`, {
-                signal: controller.signal
-            });
-            const data = await res.json();
-            if (!cancelled) {
-                setProductId(data);           // <- se actualiza con el nuevo id
-                // Reseteos útiles cuando cambia el producto
-                setDescOpen(false);
-                window.scrollTo(0, 0);        // opcional: subir al top
-            }
-            } catch (err) {
-            if (err.name !== "AbortError") {
-                console.error("Error al traer producto:", err);
-            }
-            }
-        }
-        
-        
-        setProductId(null);  // fuerza estado "Cargando..." mientras cambia
-        load();
-        
-        return () => { cancelled = true; controller.abort(); };
-    }, [id]); // <- IMPORTANTE
+    useEffect(() => {    
+        productGetById(id)
+        .then(data => {
+            setProductId(data);
+            setImagen(data.images?.[0] ?? null);
+        })
+        .catch(err => {
+            console.error("Error al traer el producto:", err);
 
-    // ---------------------
-    // Efecto 2: setear imagen inicial
-    // ---------------------
+        });
+        productsList({ limit: 30 })
+        .then(data => {
+          setProducts(data.items)
+        })
+        .catch(err => console.error("Error al traer productos:", err));
+    }, [id]);
+
     useEffect(() => {
       if (productId) {
         setImagen( productId.images?.[0] ?? null);
       }
     }, [productId]);
 
-    // ---------------------
-    // Efecto 3: calcular ratings y conteos
-    // ---------------------
     useEffect(() => {
-      // productId puede ser null al primer render => usá optional chaining y valores por defecto
       const ratings = productId?.rewiews?.map(r => Number(r.rating)) ?? [];
-
-      // sumatoria y promedio seguros
       const totalAvg = ratings.reduce((acc, n) => acc + (Number.isFinite(n) ? n : 0), 0);
       const avgStars = ratings.length ? totalAvg / ratings.length : 0;
-
       const reviews = productId?.rewiews ?? [];
-
       const counts = reviews.reduce(
         (acc, { rating }) => {
           const r = Math.trunc(Number(rating));
@@ -90,9 +55,8 @@ const ProductDetail = () => {
           }
           return acc;
         },
-        { 5: 0, 4: 0, 3: 0, 2: 0, 1: 0 } // inicialización
+        { 5: 0, 4: 0, 3: 0, 2: 0, 1: 0 }
       );
-      
 
       setCounts(counts);
       const totalList = Object.values(counts).reduce((a, b) => a + b, 0);
@@ -101,31 +65,12 @@ const ProductDetail = () => {
       setAvg(Math.round(avgStars)+".0")
     },[productId])
 
-    // ---------------------
-    // Efecto 4: traer productos relacionados (slider)
-    // ---------------------
-    useEffect(() => {
-      fetch(`${API}/products`)
-        .then(res => res.json())
-        .then(data => {
-          setProducts(data.items);
-
-        })
-        .catch(err => console.error("Error al traer productos:", err));
-    }, []);
-
     if (!productId) return <p>Cargando...</p>;  
 
-    // ---------------------
-    // Handlers (eventos de UI)
-    // ---------------------
     const onImageHover = (src) => {
       setImagen(src);
     }
 
-    // ---------------------
-    // Render
-    // ---------------------
     return (
     <section className="ProductDetail-section" key={id}>
       {/* Migas / enlaces superiores */}
@@ -168,8 +113,7 @@ const ProductDetail = () => {
         <section className="ProductDetail-bar">
           <div
             className="ProductDetail-bar__container"
-            style={desplaceY <= 0 && { top: "16px" }}
-            // : {transform: `translateY(${desplaceY}px)`}
+            style={{ top: "16px" }}
           >
             {/* ---- DETALLE DEL PRODUCTO ---- */}
             <section className="ProductDetail-detail">

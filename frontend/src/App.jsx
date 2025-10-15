@@ -5,6 +5,7 @@ import Navbar from './component/Navbar/Narbar';
 import SearchPage from './component/SearchPage/SearchPage';
 import { Routes, Route } from "react-router-dom";
 import ProductDetail from './component/ProductDetail/ProductDetail';
+import "@fortawesome/fontawesome-free/css/all.min.css";
 
 function App() {
   return (

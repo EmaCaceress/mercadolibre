@@ -2,6 +2,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import "./Main.scss";
 import SliderButtons from "../SliderButton/SliderButton";
+import { productsList } from "../../api/server";
 
 // Imágenes y datos del slider principal
 const slider = [
@@ -28,15 +29,13 @@ const cards = [
 ];
 
 const Main = () => {
-  const API = import.meta.env.VITE_API_BASE || "http://localhost:4000";
   const [index, setIndex] = useState(0);
   const sliderRef = useRef(null);
   const totalSlides = slider.length;
   const [products, setProducts] = useState([]);
   const [sliderFirst, setSliderFirst] = useState(cards);
   useEffect(() => {
-    fetch(`${API}/products`)
-      .then(res => res.json())
+    productsList({ limit: 30 })
       .then(data => {
         setProducts(data.items)
         setSliderFirst(prev => [...data.items.slice(0,3), ...prev.slice(0,1), ...data.items.slice(3,4), ...prev.slice(1,)] )

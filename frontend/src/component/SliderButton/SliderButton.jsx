@@ -133,7 +133,7 @@ const SliderButtons = ({ slider, title, cardw, cardg, cardH, cant = 9}) => {
         >
           {slider.map((prod, idx) =>
             typeof prod === "object" && prod !== null ? (
-              <Card key={prod.id ?? idx} prod={prod} cardWidth={cardWidth} />
+              <Card key={idx} prod={prod} cardWidth={cardWidth} />
             ) : (
               <Link to={`/search?q=${encodeURIComponent(prod)}`} key={String(prod)}>
                 <BrandLogo brand={String(prod)} size={cardWidth} />
