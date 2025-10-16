@@ -16,8 +16,9 @@ const API = import.meta.env.VITE_API_BASE || "http://localhost:4000";
 export default function SearchPage() {
   const params = useQuery();
   const q = params.get("q") || "";
-  const page = Math.max(1, Number(params.get("page") || 1));
-  const limit = 24;
+  const limit = 48;
+  const [page, setPage] = useState(0);
+  const [cant, setCant] = useState(0);
   const skip = (page - 1) * limit;
   const [loading, setLoading] = useState(false);
   const [products, setProducts] = useState([]);
@@ -34,13 +35,13 @@ export default function SearchPage() {
   const [brands, setBrands] = useState([]);
 
   useEffect(() => {
-    productsSearch({q: q, limit: 200})
+    productsSearch({q: q, limit: limit, skip: skip})
       .then(data => {
         setProducts(data.items);
         setProductsOld(data.items);
+        setCant(data.total);
       })
       .catch(err => console.error("Error al traer productos:", err));
-      
   }, [q, page]);
 
   useEffect(() => {
@@ -65,7 +66,7 @@ export default function SearchPage() {
       )
     ];
     setBrands(uniqueBrands);
-    setTotal(products.length)
+    setTotal(cant)
   }, [products, q]);
   
   return (
@@ -191,16 +192,14 @@ export default function SearchPage() {
                 <nav className="spg__pagination" aria-label="Paginación">
                   {Array.from({ length: pages }).map((_, i) => {
                     const n = i + 1;
-                    const sp = new URLSearchParams(window.location.search);
-                    sp.set("page", String(n));
                     return (
-                      <Link
-                        key={n}
-                        to={`/search?${sp.toString()}`}
+                      <div
+                        key={i}
+                        onClick={() => setPage(n)}
                         className={n === page ? "is-current" : ""}
                       >
                         {n}
-                      </Link>
+                      </div>
                     );
                   })}
                 </nav>

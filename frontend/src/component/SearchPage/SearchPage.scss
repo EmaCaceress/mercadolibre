@@ -48,21 +48,24 @@
     }
 
     &__pagination {
-      margin-top: 1rem;
-
-      a {
+      margin: 2rem;
+      text-align: center;
+      font-size: $font-size-md+2;
+      div {
         display: inline-block;
-        padding: .4rem .65rem;
-        margin-right: .25rem;
-        color: $color-text-primary;
+        padding: 5px 15px;
+        margin-right: 20px;
+        color: $color-neutral-600;
+        font-weight: 600;
         text-decoration: none;
         border: 1px solid $color-border-default;
         border-radius: $radius-8;
       }
 
       .is-current {
-        color: $color-info-500;
-        border-color: $color-info-500;
+        color: $color-neutral-950;
+        background-color: white;
+        border:3px solid $color-info-500;
       }
     }
   }
