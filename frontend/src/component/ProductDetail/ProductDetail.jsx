@@ -34,6 +34,7 @@ const ProductDetail = () => {
           setProducts(data.items)
         })
         .catch(err => console.error("Error al traer productos:", err));
+        window.scrollTo(0, 0);
     }, [id]);
 
     useEffect(() => {

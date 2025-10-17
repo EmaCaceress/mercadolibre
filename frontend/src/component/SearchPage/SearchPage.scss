@@ -50,20 +50,22 @@
     &__pagination {
       margin: 2rem;
       text-align: center;
-      font-size: $font-size-md+2;
+      font-size: $font-size-sm+3;
       div {
         display: inline-block;
-        padding: 5px 15px;
+        padding: 2.5px 9.5px;
         margin-right: 20px;
         color: $color-neutral-600;
-        font-weight: 600;
         text-decoration: none;
         border: 1px solid $color-border-default;
         border-radius: $radius-8;
+        &:hover{
+          background-color: rgba($color-info-500,0.1);
+        }
       }
-
       .is-current {
         color: $color-neutral-950;
+        font-weight: 600;
         background-color: white;
         border:3px solid $color-info-500;
       }

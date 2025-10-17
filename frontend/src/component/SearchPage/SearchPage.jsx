@@ -195,7 +195,7 @@ export default function SearchPage() {
                     return (
                       <div
                         key={i}
-                        onClick={() => setPage(n)}
+                        onClick={() => {setPage(n), window.scrollTo(0, 0);}}
                         className={n === page ? "is-current" : ""}
                       >
                         {n}
