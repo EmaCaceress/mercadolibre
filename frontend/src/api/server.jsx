@@ -1,5 +1,5 @@
 // Configurable desde .env (Vite) o caé en localhost por defecto
-const API_BASE = import.meta?.env?.VITE_API || "http://localhost:4000"; //import.meta?.env?.VITE_API || 
+const API_BASE = import.meta?.env?.VITE_API_BASE || "http://localhost:4000"; //import.meta?.env?.VITE_API || 
 
 // Helper para querystrings: {q:"iphone", limit:10} => ?q=iphone&limit=10
 function toQuery(params = {}) {
