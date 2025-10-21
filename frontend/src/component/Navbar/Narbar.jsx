@@ -34,7 +34,7 @@ const Navbar = () => {
           <i className="fa-solid fa-location-dot" size={20}></i>
           <div>
             <div>Emanuel Chacon</div>
-            <div>Calle 111 1473</div>
+            <div>Berazategui</div>
           </div>
         </div>
 
